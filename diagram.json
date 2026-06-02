@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "author": "Cyberbee-pro",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    {
+      "type": "wokwi-pushbutton-6mm",
+      "id": "btn1",
+      "top": -11.8,
+      "left": -105.6,
+      "attrs": { "color": "green", "xray": "1" }
+    },{
+      "type": "wokwi-pushbutton-6mm",
+      "id": "btn2",
+      "top": 20.8,
+      "left": -130.6,
+      "attrs": { "color": "green", "xray": "1" }
+    }
+    
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "btn1:1.r", "esp:14", "green", [ "v105.6", "h87.2" ] ],
+    [ "btn2:2.l", "esp:14", "green", [ "v105.6", "h87.2" ] ]
+
+  ],
+  "dependencies": {}
+}
