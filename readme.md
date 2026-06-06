@@ -25,6 +25,6 @@
 <li>9 programable Buttons</li>
 <li>Joystick mouce controll</li>
 <li>RT click (can be programed)</li>
-<li>Mode buld</li>
+<li>Mode bulb</li>
 
 </ul>

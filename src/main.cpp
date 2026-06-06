@@ -20,8 +20,8 @@
 #define BUTTON_TOGGLE_MACRO 14
 
 #define LED_UNO 25
-#define LED_UNO 33
-#define LED_UNO 32
+#define LED_DOS 33
+#define LED_TRESS 32
 
 #define POT_SIG 35
 
