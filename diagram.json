@@ -110,7 +110,7 @@
     [ "esp:TX", "$serialMonitor:RX", "", [] ],
     [ "esp:RX", "$serialMonitor:TX", "", [] ],
     [ "esp:GND.2", "bb2:bn.1", "black", [ "v-172.8", "h36.8" ] ],
-    [ "bb2:bn.1", "pot1:GND", "green", [ "v17.9", "h-17.6", "v115.2", "h38.4" ] ],
+    [ "bb2:bn.1", "pot1:GND", "green", [ "v17.9", "h-8", "v115.2", "h38.4" ] ],
     [ "bb2:bn.10", "led6:C", "green", [ "v0" ] ],
     [ "bb2:bn.15", "led5:C", "green", [ "v0" ] ],
     [ "bb2:bn.20", "led4:C", "green", [ "v0" ] ],
