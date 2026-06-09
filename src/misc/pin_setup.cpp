@@ -2,7 +2,7 @@
 #include <PINS.h>
 #include <ResponsiveAnalogRead.h>
 
-int LED[3] = {25, 33, 32};
+int LED[3] = { 32, 33, 25};
 
 int buttons[12] = {
     KEY_TOP_LEFT,  KEY_TOP_MID,  KEY_TOP_RIGHT,

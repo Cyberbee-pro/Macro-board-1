@@ -2,6 +2,7 @@
 
 #include <PINS.h>
 #include <POT.h>
+#include <ModeDisp.h>
 
 
 
@@ -21,5 +22,7 @@ if (digitalRead(KEY_TOP_LEFT) == LOW) {
     // Fire your target macro trigger event profile here
     Serial.println("Top Left Button Action Activated!");
   }
-
+  Mode_switch();
+  Mode_run();
+  Mode_show();
 }
