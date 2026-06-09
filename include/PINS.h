@@ -1,6 +1,10 @@
-#ifndef PINS
-#define PINS 
+#ifndef PINS_H
+#define PINS_H 
 
+#include <Arduino.h>
+#include <ResponsiveAnalogRead.h>
+
+extern float snapMultiplier;
 
 // Row 1 (Top)
 #define KEY_TOP_LEFT   21  // btn6
@@ -17,16 +21,28 @@
 #define KEY_BOT_MID    16  // btn2
 #define KEY_BOT_RIGHT  17  // btn9
 
-#define BUTTON_RIGHT 26
-#define BUTTON_LEFT  27    // Joystick push button 
 
 #define BUTTON_TOGGLE_MACRO 14
 
-#define LED_UNO 25
-#define LED_DOS 33
-#define LED_TRESS 32
+// Leds
+extern int LED[3];
 
-#define JOY_HOR 35
-#define JOY_VERT 35
+//JoyStick
+#define JOY_HOR 39
+#define JOY_VERT 36
+#define BUTTON_LEFT  27    // Joystick push button 
+
+
+#define BUTTON_RIGHT 26
+
+
+//Potentiometer 
+#define POT_SIG 35
+
+
+extern int buttons[12];
+
+void pins_setup();
+
 
 #endif

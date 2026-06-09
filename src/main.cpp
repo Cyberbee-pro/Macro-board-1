@@ -1,32 +1,25 @@
 #include <Arduino.h>
 
-#include "Headers/PINS.h"
-#include "Headers/POTpins.h"
+#include <PINS.h>
+#include <POT.h>
 
 
 
 void setup() {
   // put your setup code here, to run once:
   // int result = myFunction(2, 3);
-  Serial.begin(9600);
-  // LEP PINS SETUP
-  pinMode(LED_UNO,OUTPUT);
-  pinMode(LED_DOS,OUTPUT);
-  pinMode(LED_TRESS,OUTPUT);
-
-  //Joystick setup
-  pinMode(JOY_HOR,INPUT_PULLUP);
-  pinMode(JOY_VERT,INPUT_PULLUP);
-
+  Serial.begin(115200);
   
+  pins_setup();
+
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  FN_led_pot();
-}
+  // FN_led_pot();
+if (digitalRead(KEY_TOP_LEFT) == LOW) {
+    // Fire your target macro trigger event profile here
+    Serial.println("Top Left Button Action Activated!");
+  }
 
-// put function definitions here:
-// int myFunction(int x, int y) {
-//   return x + y;
-// }
+}

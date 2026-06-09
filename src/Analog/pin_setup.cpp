@@ -1,0 +1,41 @@
+#include <Arduino.h>
+#include <PINS.h>
+#include <ResponsiveAnalogRead.h>
+
+int LED[3] = {25, 33, 32};
+
+int buttons[12] = {
+    KEY_TOP_LEFT,  KEY_TOP_MID,  KEY_TOP_RIGHT,
+    KEY_MID_LEFT,  KEY_MID_MID,  KEY_MID_RIGHT,
+    KEY_BOT_LEFT,  KEY_BOT_MID,  KEY_BOT_RIGHT,
+    BUTTON_RIGHT,  BUTTON_LEFT,  BUTTON_TOGGLE_MACRO
+};
+
+
+
+//joystick
+ResponsiveAnalogRead Joy_Hor_Res(JOY_HOR,true,snapMultiplier);
+ResponsiveAnalogRead Joy_Ver_Res(JOY_VERT,true,snapMultiplier);
+
+//Potentiometer
+ResponsiveAnalogRead Pot_Sig_Res(POT_SIG,true,snapMultiplier);
+
+
+float snapMultiplier = 0.01;
+
+void pins_setup(){
+    
+    for(int i = 0 ; i < sizeof(LED)/sizeof(LED[0]) ; i++ ){
+        pinMode(LED[i],OUTPUT);
+    }
+
+    for(int i = 0 ; i < sizeof(buttons)/sizeof(buttons[0]) ; i++ ){
+        pinMode(buttons[i],INPUT_PULLUP);
+    }
+
+
+    // //Joystick setup
+    // pinMode(JOY_HOR,INPUT_PULLUP);
+    // pinMode(JOY_VERT,INPUT_PULLUP);
+
+}
