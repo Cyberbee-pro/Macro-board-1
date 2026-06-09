@@ -92,15 +92,27 @@ void Mode_run(){
 
 
 void Mode_show(){
+    setCurSrl();
+    if(curr_srl>3){
+        Serial.print("cant display more than 3 modes in base dec ///// switching to binary (upto 6)");
+        Mode_show_bin();
+        return;
+    }
     for(int i = 0; i<3;i++){
         digitalWrite(LED[i],LOW);
     }
-    curr_srl = setCurSrl()-1;
-    digitalWrite(LED[curr_srl],HIGH);
+    int Cur_LED_INDEX = curr_srl -1;
+    digitalWrite(LED[Cur_LED_INDEX],HIGH);
 }
 
 
 void Mode_show_bin(){
+    setCurSrl();
+    if(curr_srl>6){
+        Serial.print("FATAL ERROR : MAX MACROS ALLOWED : 6");
+        return;
+    }
+
     for(int i = 0; i<3;i++){
         digitalWrite(LED[i],LOW);
     }
