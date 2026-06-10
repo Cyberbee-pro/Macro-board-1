@@ -13,7 +13,7 @@ void joy_run();
 
 void joy_run_def();
 
-extern void (*call)();
+extern void (*call_joy)();
 
 
 #endif

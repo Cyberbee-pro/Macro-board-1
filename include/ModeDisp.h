@@ -54,7 +54,7 @@ class mode{
     }
 };
 
-extern mode def,gaming,media;
+extern mode def,gaming,media,midi;
 extern std::vector<mode*> mode_list_vec;
 
 void Mode_switch();
