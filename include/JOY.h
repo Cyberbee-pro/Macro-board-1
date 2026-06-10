@@ -13,6 +13,10 @@ void joy_run();
 
 void joy_run_def();
 
+void Click_Left_reg();
+void Click_Right_reg();
+
+
 extern void (*call_joy)();
 
 

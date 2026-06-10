@@ -5,6 +5,8 @@
 
 #include <PINS.h>
 #include <POT.h>
+#include <JOY.h>
+#include <Butt_matrix.h>
 #include <ModeDisp.h>
 #include <dec2bin.h>
 
@@ -12,7 +14,9 @@
 
 void run_def(){
     // Serial.println("Running default config - 1");
+    joy_state_update();
     pot_update();
+    run_matrix();
 }
 
 void run_gaming(){
