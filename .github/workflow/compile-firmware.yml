@@ -1,0 +1,42 @@
+name: PlatformIO ESP32 Firmware CI
+
+# Trigger the workflow on every push or pull request to your main branch
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-firmware:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout your code repository into the virtual machine canvas
+      - name: Checkout Code Base
+        uses: actions/checkout@v4
+
+      # 2. Cache PlatformIO dependencies to make subsequent builds blazing fast
+      - name: Cache PlatformIO Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.platformio
+            .pio
+          key: ${{ runner.os }}-platformio-${{ hashFiles('**/platformio.ini') }}
+
+      # 3. Set up Python (required by PlatformIO core tools)
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-node: '3.10'
+
+      # 4. Install PlatformIO Core framework
+      - name: Install PlatformIO Core
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade platformio
+
+      # 5. Run the compiler verification sweep!
+      - name: Compile Firmware Targets
+        run: pio run
