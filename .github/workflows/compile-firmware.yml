@@ -1,42 +1,54 @@
-name: PlatformIO ESP32 Firmware CI
+name: PlatformIO Arch Linux Firmware CI
 
-# Trigger the workflow on every push or pull request to your main branch
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
 
 jobs:
-  build-firmware:
+  build-and-commit:
     runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
 
     steps:
-      # 1. Checkout your code repository into the virtual machine canvas
+      - name: Initialize Arch Package Repositories
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm git python python-pip gcc
+
+      # CRITICAL: We need a secure checkout token to let the bot write data back
       - name: Checkout Code Base
         uses: actions/checkout@v4
-
-      # 2. Cache PlatformIO dependencies to make subsequent builds blazing fast
-      - name: Cache PlatformIO Dependencies
-        uses: actions/cache@v4
         with:
-          path: |
-            ~/.platformio
-            .pio
-          key: ${{ runner.os }}-platformio-${{ hashFiles('**/platformio.ini') }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      # 3. Set up Python (required by PlatformIO core tools)
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-node: '3.10'
-
-      # 4. Install PlatformIO Core framework
-      - name: Install PlatformIO Core
+      - name: Install PlatformIO Core CLI
         run: |
-          python -m pip install --upgrade pip
+          python -m venv .venv
+          source .venv/bin/activate
           pip install --upgrade platformio
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> $GITHUB_PATH
 
-      # 5. Run the compiler verification sweep!
       - name: Compile Firmware Targets
-        run: pio run
+        run: |
+          source .venv/bin/activate
+          pio run
+
+      # 🟢 THE BOT IDENTITY: Force the automated container to log in as a user
+      - name: GitHub-BIN-COMPILER
+        run: |
+          mkdir -p production_builds
+          cp .pio/build/esp32dev/firmware.bin production_builds/esp32-macroboard-latest.bin || true
+
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global user.name "cyberbee-firmware-bot"
+          git config --global user.email "cyberbee-pro@users.noreply.github.com"
+
+          git add production_builds/*.bin
+          
+          if ! git diff --cached --quiet; then
+            git commit -m "//: Automated Firmware Compile: Build Asset Update"
+            git push origin HEAD:${{ github.ref_name }}
+          else
+            echo "No changes detected in firmware layout bytes. Skipping commit sweep."
+          fi
