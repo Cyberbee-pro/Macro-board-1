@@ -2,6 +2,8 @@
 #define MODE_H
 
 #include <Arduino.h>
+#include <vector>
+
 #include <PINS.h>
 #include <string>
 #include <map>
@@ -53,7 +55,7 @@ class mode{
 };
 
 extern mode def,gaming,media;
-
+extern std::vector<mode*> mode_list_vec;
 
 void Mode_switch();
 

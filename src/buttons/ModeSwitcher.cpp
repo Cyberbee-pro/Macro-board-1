@@ -17,32 +17,9 @@ int led_array_state = 0;
 
 int mode::count = 1;
 
-
-void run_def(){
-    // Serial.println("Running default config - 1");
-    pot_update();
-}
-
-void run_gaming(){
-    Serial.println("Running gaming config - 2");
-}
-
-void run_media(){
-    Serial.println("Running Media config - 3");
-}
-
-
-mode def("Default",&run_def);
-
-mode gaming("Gaming",&run_gaming);
-
-mode media("Media",&run_media);
-
-std::vector<mode*> mode_list_vec = {&def,&gaming,&media};
 mode *Current_config = &def;
 int curr_srl = 1;
 
-// int prev_state
 
 void SearchNset(int target_srl){
     bool found = false;
