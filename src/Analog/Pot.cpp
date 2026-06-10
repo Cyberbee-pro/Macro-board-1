@@ -8,6 +8,7 @@ int Threashold = 3;
 int Prev_Pot_state = 0;
 int Curr_Pot_state = 0;
 #define Pot_state_diff() (abs(Prev_Pot_state-Curr_Pot_state))
+
 void (*call)() = nullptr;
 
 void pot_update(void (*call_inp)()){

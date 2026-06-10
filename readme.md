@@ -1,5 +1,7 @@
 # 🛠️ Macro Board V1
 
+![Full Banner](Frame%201.png)
+
 A highly programmable, multi-layered custom hardware macro pad and controller built around the **ESP32** architecture. This device features a full 3x3 key matrix, a mouse-emulating analog joystick, an absolute analog potentiometer dial, and dedicated mode-switching indicators.
 
 ---
