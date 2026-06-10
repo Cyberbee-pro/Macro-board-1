@@ -1,8 +1,17 @@
 #ifndef POT_H
 #define POT_H
 
-// extern int POT_State = 0;
 
-void FN_led_pot();
+extern int Prev_Pot_state;
+extern int Curr_Pot_state;
+extern int Threashold;
+
+
+void pot_update(void (*call_inp)() = nullptr);
+
+void pot_run();
+
+extern void (*call)();
+
 
 #endif
