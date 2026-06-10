@@ -1,6 +1,6 @@
 # 🛠️ Macro Board V1
 
-![Full Banner](Frame%201.png)
+![Full Banner](Images/Frame%201.png)
 
 A highly programmable, multi-layered custom hardware macro pad and controller built around the **ESP32** architecture. This device features a full 3x3 key matrix, a mouse-emulating analog joystick, an absolute analog potentiometer dial, and dedicated mode-switching indicators.
 
@@ -9,11 +9,11 @@ A highly programmable, multi-layered custom hardware macro pad and controller bu
 ## 📸 Visual References
 
 ### 3D Enclosure Render
-![En enclosure 3D Model Render](render%202.jpg)
+![En enclosure 3D Model Render](Images/render%202.jpg)
 
 ### Wokwi Circuit Layout
 <p align="center">
-   <img src="wofi%20render.png" alt="Wokwi Circuit Render Layout" width="450" />
+   <img src="Images/wofi%20render.png" alt="Wokwi Circuit Render Layout" width="450" />
 </p>
 
 ---
