@@ -2,6 +2,7 @@
 
 #include <PINS.h>
 #include <POT.h>
+#include <JOY.h>
 #include <ModeDisp.h>
 
 
@@ -25,4 +26,5 @@ if (digitalRead(KEY_TOP_LEFT) == LOW) {
   Mode_switch();
   Mode_run();
   Mode_show();
+  joy_state_update();
 }
