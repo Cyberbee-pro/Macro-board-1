@@ -17,6 +17,7 @@ int led_array_state = 0;
 
 int mode::count = 1;
 
+
 mode *Current_config = &def;
 int curr_srl = 1;
 
@@ -75,14 +76,16 @@ void Mode_run(){
 
 void Mode_show(){
     setCurSrl();
-    if(curr_srl>3){
-        Serial.print("cant display more than 3 modes in base dec ///// switching to binary (upto 6)");
-        Mode_show_bin();
-        return;
-    }
     for(int i = 0; i<3;i++){
         digitalWrite(LED[i],LOW);
     }
+    int total_count = mode::getCount(); 
+    if(total_count > 3){
+        // Serial.println("\ncant display more than 3 modes in base dec ///// switching to binary (upto 6)");
+        Mode_show_bin();
+        return;
+    }
+    
     int Cur_LED_INDEX = curr_srl -1;
     digitalWrite(LED[Cur_LED_INDEX],HIGH);
 }

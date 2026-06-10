@@ -19,12 +19,11 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   // FN_led_pot();
-if (digitalRead(KEY_TOP_LEFT) == LOW) {
-    // Fire your target macro trigger event profile here
-    Serial.println("Top Left Button Action Activated!");
-  }
+  // if (digitalRead(KEY_TOP_LEFT) == LOW) {
+  //   // Fire your target macro trigger event profile here
+  //   Serial.println("Top Left Button Action Activated!");
+  // }
   Mode_switch();
   Mode_run();
   Mode_show();
-  joy_state_update();
 }
