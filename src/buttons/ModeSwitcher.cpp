@@ -1,9 +1,13 @@
 #include <Arduino.h>
-#include <PINS.h>
-#include <ModeDisp.h>
-#include <dec2bin.h>
 #include <string>
 #include <vector>
+
+
+#include <PINS.h>
+#include <POT.h>
+#include <ModeDisp.h>
+#include <dec2bin.h>
+
 
 #define setCurSrl() (curr_srl = Current_config->getSerial())
 
@@ -15,7 +19,8 @@ int mode::count = 1;
 
 
 void run_def(){
-    Serial.println("Running default config - 1");
+    // Serial.println("Running default config - 1");
+    pot_update();
 }
 
 void run_gaming(){

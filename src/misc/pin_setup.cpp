@@ -32,10 +32,11 @@ void pins_setup(){
     for(int i = 0 ; i < sizeof(buttons)/sizeof(buttons[0]) ; i++ ){
         pinMode(buttons[i],INPUT_PULLUP);
     }
+    //Joystick setup
+    Joy_Hor_Res.setAnalogResolution(4095);
+    Joy_Ver_Res.setAnalogResolution(4095);
 
-
-    // //Joystick setup
-    // pinMode(JOY_HOR,INPUT_PULLUP);
-    // pinMode(JOY_VERT,INPUT_PULLUP);
+    //Potentiometer Setup
+    Pot_Sig_Res.setAnalogResolution(4095);
 
 }

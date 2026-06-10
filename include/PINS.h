@@ -31,6 +31,9 @@ extern int LED[3];
 #define JOY_HOR 39
 #define JOY_VERT 36
 #define BUTTON_LEFT  27    // Joystick push button 
+extern ResponsiveAnalogRead Joy_Hor_Res,Joy_Ver_Res;
+
+
 
 
 #define BUTTON_RIGHT 26
@@ -38,6 +41,8 @@ extern int LED[3];
 
 //Potentiometer 
 #define POT_SIG 35
+extern ResponsiveAnalogRead Pot_Sig_Res;
+
 
 
 extern int buttons[12];
