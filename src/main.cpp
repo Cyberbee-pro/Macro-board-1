@@ -1,4 +1,6 @@
 #include <Arduino.h>
+#include <BleMouse.h>
+
 
 #include <PINS.h>
 #include <POT.h>
