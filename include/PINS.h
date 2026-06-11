@@ -50,7 +50,6 @@ extern ResponsiveAnalogRead Joy_Hor_Res,Joy_Ver_Res;
 extern ResponsiveAnalogRead Pot_Sig_Res;
 
 extern custom_wait wait_pot;
-extern custom_wait wait_mod;
 
 
 

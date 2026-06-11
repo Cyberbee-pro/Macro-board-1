@@ -35,13 +35,21 @@
        * unsigned int Tracking_Start_R: Initialized to 0 but never read or updated.
        * bool Tracking_stat_R: Declared but never used.
        * bool hold_Engaged_R: Declared but never used.
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ~Acounted
+
    * `src/Analog/Joystick.cpp`
        * int Threashold_Joy: Declared and initialized (150) but only exists within commented-out debug code.
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ~Acounted // it was a debug variable
+
    * `src/Modes/ModeSwitcher.cpp`
        * bool Prev_Butt_state: Initialized to HIGH and used in a condition, but never updated to Current_Butt_state. This prevents the
          "once-per-press" logic from working correctly, effectively making it a constant.
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ~Acounted // it dosent work
+
    * `include/PINS.h`
        * extern custom_wait wait_mod: Declared in the header but never defined or used in any source file.
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ~Acounted // was not neeeded latter
+
 
   ---
 
