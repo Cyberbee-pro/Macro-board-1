@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <PINS.h>
 #include <ResponsiveAnalogRead.h>
+#include <BleMouse.h>
 
 int LED[3] = { 32, 33, 25};
 
@@ -20,6 +21,7 @@ ResponsiveAnalogRead Joy_Ver_Res(JOY_VERT,true,snapMultiplier);
 //Potentiometer
 ResponsiveAnalogRead Pot_Sig_Res(POT_SIG,true,snapMultiplier);
 
+BleMouse bleMouse("MacroBoard V1","Saa-labs",100);
 
 float snapMultiplier = 0.01;
 

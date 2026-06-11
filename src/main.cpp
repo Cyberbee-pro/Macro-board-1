@@ -8,7 +8,6 @@
 #include <ModeDisp.h>
 
 
-BleMouse bleMouse("MacroBoard V1","Saa-labs",100);
 
 
 void setup() {
@@ -30,11 +29,13 @@ void loop() {
   // }
 
 
-  if(bleMouse.isConnected()){
+  // if(bleMouse.isConnected()){
   Mode_switch();
   Mode_run();
   Mode_show();
-  }else{
-    Serial.println("Macroboard is not connected , waiting for connection. . . .");
-  }
+  // }
+  // else{
+  //   Serial.println("Macroboard is not connected , waiting for connection. . . .");
+  //   delay(5000);
+  // }
 }
