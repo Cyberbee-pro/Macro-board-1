@@ -46,8 +46,8 @@ jobs:
           cp .pio/build/esp32dev/firmware.bin production_builds/esp32-macroboard-latest.bin || true
 
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git config --global user.name "cyberbee-firmware-bot"
-          git config --global user.email "cyberbee-pro@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add production_builds/*.bin
           
