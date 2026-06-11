@@ -3,8 +3,11 @@
 
 #include <Arduino.h>
 #include <ResponsiveAnalogRead.h>
+#include <BleMouse.h>
 
 extern float snapMultiplier;
+
+extern BleMouse bleMouse;
 
 // Row 1 (Top)
 #define KEY_TOP_LEFT   21  // btn6
