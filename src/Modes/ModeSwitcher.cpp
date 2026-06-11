@@ -1,12 +1,14 @@
 #include <Arduino.h>
 #include <string>
 #include <vector>
+#include <BleKeyboard.h>
 
 
 #include <PINS.h>
 #include <POT.h>
 #include <ModeDisp.h>
 #include <dec2bin.h>
+#include <CUSwait.h>
 
 
 #define setCurSrl() (curr_srl = Current_config->getSerial())
@@ -50,6 +52,8 @@ void Mode_switch(){
     if(Current_Butt_state == LOW && Prev_Butt_state == HIGH){
         Serial.println("Macro Button presed");
 
+        
+
         if(curr_srl < maxCount){
             SearchNset(curr_srl + 1);
         }else if(curr_srl == maxCount){
@@ -61,9 +65,9 @@ void Mode_switch(){
         Serial.print("||Serial : ");
         Serial.print(Current_config->getSerial());
         Serial.println("");
-        delay(200);
+        delay(150);
+
     }
-    Prev_Butt_state = Current_Butt_state ;
 
 }
 

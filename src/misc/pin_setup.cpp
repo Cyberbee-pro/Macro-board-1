@@ -2,6 +2,7 @@
 #include <PINS.h>
 #include <ResponsiveAnalogRead.h>
 #include <BleMouse.h>
+#include <BleKeyboard.h>
 
 int LED[3] = { 32, 33, 25};
 
@@ -22,10 +23,16 @@ ResponsiveAnalogRead Joy_Ver_Res(JOY_VERT,true,snapMultiplier);
 ResponsiveAnalogRead Pot_Sig_Res(POT_SIG,true,snapMultiplier);
 
 BleMouse bleMouse("MacroBoard V1","Saa-labs",100);
+BleKeyboard bleKeyboard("MacroBoard V1","Saa-labs",100);
+
 
 float snapMultiplier = 0.01;
 
 void pins_setup(){
+
+    // bleMouse.begin();
+    // bleKeyboard.begin();
+
     
     for(int i = 0 ; i < sizeof(LED)/sizeof(LED[0]) ; i++ ){
         pinMode(LED[i],OUTPUT);
@@ -40,5 +47,8 @@ void pins_setup(){
 
     //Potentiometer Setup
     Pot_Sig_Res.setAnalogResolution(4095);
+
+    wait_pot.start();
+
 
 }

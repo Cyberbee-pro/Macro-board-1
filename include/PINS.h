@@ -4,10 +4,13 @@
 #include <Arduino.h>
 #include <ResponsiveAnalogRead.h>
 #include <BleMouse.h>
+#include <BleKeyboard.h>
+#include <CUSwait.h>
 
 extern float snapMultiplier;
 
 extern BleMouse bleMouse;
+extern BleKeyboard bleKeyboard;
 
 // Row 1 (Top)
 #define KEY_TOP_LEFT   21  // btn6
@@ -45,6 +48,9 @@ extern ResponsiveAnalogRead Joy_Hor_Res,Joy_Ver_Res;
 //Potentiometer 
 #define POT_SIG 35
 extern ResponsiveAnalogRead Pot_Sig_Res;
+
+extern custom_wait wait_pot;
+extern custom_wait wait_mod;
 
 
 
