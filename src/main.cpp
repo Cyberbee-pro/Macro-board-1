@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <BleMouse.h>
+#include <BleKeyboard.h>
 
 
 #include <PINS.h>
@@ -13,9 +14,7 @@
 void setup() {
   // put your setup code here, to run once:
   // int result = myFunction(2, 3);
-  Serial.begin(115200);
-  bleMouse.begin();
-  
+  Serial.begin(115200);  
   pins_setup();
 
 }
