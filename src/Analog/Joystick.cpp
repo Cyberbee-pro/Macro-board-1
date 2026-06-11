@@ -4,6 +4,8 @@
 #include <BleMouse.h>
 
 int Threashold_Joy = 150; // Increased to handle raw hardware noise cushions
+int Sensi = 15; 
+
 
 int Curr_Joy_Y = 0;
 int Curr_Joy_X = 0;
@@ -20,12 +22,12 @@ void joy_state_update(void (*call_inp)()){
     // 1. Process Vertical Axis (Y-Axis)
     Joy_Ver_Res.update();
     Curr_Joy_Y = Joy_Ver_Res.getValue();
-    Move_X = map(Curr_Joy_X,0,4095,-12,12);
+    Move_X = map(Curr_Joy_X,0,4095,-Sensi,Sensi);
     
     // 2. Process Horizontal Axis (X-Axis)
     Joy_Hor_Res.update();
     Curr_Joy_X = Joy_Hor_Res.getValue();
-    Move_Y = map(Curr_Joy_Y,0,4095,-12,12);
+    Move_Y = map(Curr_Joy_Y,0,4095,-Sensi,Sensi);
 
     joy_run();
 

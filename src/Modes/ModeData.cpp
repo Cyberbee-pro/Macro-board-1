@@ -21,15 +21,24 @@ void run_def(){
 
 void run_gaming(){
     // Serial.println("Running gaming config - 2");
+    joy_state_update();
+    pot_update();
+
 }
 
 void run_media(){
     // Serial.println("Running Media config - 3");
+    joy_state_update();
+    pot_update();
+
+
 }
 
-void run_midi(){
-    // Serial.println("Running Media config - 3");
-}
+// void run_midi(){
+//     // Serial.println("Running Media config - 3");
+//     joy_state_update();
+
+// }
 
 
 
@@ -39,7 +48,7 @@ mode gaming("Gaming",&run_gaming);
 
 mode media("Media",&run_media);
 
-mode midi("Midi",&run_midi);
+// mode midi("Midi",&run_midi);
 
 
-std::vector<mode*> mode_list_vec = {&def,&gaming,&media,&midi};
+std::vector<mode*> mode_list_vec = {&def,&gaming,&media};
