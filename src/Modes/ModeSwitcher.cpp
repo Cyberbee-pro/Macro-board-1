@@ -80,7 +80,7 @@ void Mode_show(){
         digitalWrite(LED[i],LOW);
     }
     int total_count = mode::getCount(); 
-    if(total_count > 3){
+    if(total_count > 4){
         // Serial.println("\ncant display more than 3 modes in base dec ///// switching to binary (upto 6)");
         Mode_show_bin();
         return;

@@ -15,7 +15,7 @@ int Move_X = 0;
 
 void (*call_joy)() = nullptr;
 
-void joy_state_update(void (*call_inp)()){
+void joy_state_update(void (*call_inp)()){ 
     if (call_inp != nullptr) {
         call_joy = call_inp;
     }
