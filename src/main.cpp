@@ -8,11 +8,14 @@
 #include <ModeDisp.h>
 
 
+BleMouse bleMouse("MacroBoard V1","Saa-labs",100);
+
 
 void setup() {
   // put your setup code here, to run once:
   // int result = myFunction(2, 3);
   Serial.begin(115200);
+  bleMouse.begin();
   
   pins_setup();
 
@@ -25,7 +28,13 @@ void loop() {
   //   // Fire your target macro trigger event profile here
   //   Serial.println("Top Left Button Action Activated!");
   // }
+
+
+  if(bleMouse.isConnected()){
   Mode_switch();
   Mode_run();
   Mode_show();
+  }else{
+    Serial.println("Macroboard is not connected , waiting for connection. . . .");
+  }
 }
