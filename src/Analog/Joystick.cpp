@@ -4,7 +4,7 @@
 #include <BleMouse.h>
 #include <BleKeyboard.h>
 
-int Threashold_Joy = 150; // Increased to handle raw hardware noise cushions
+// int Threashold_Joy = 150; // Increased to handle raw hardware noise cushions
 int Sensi = 15; 
 
 

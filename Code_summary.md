@@ -1,88 +1,84 @@
- Code Quality and Structural Analysis Report: Macroboard ESP32
+
+  C++ Code Quality & Structural Report
 
 
-  This report outlines the structural integrity and code quality of the Macroboard project, focusing on header management, variable usage, and
-  architectural optimizations.
-
-  ---
+  1. Unused Headers
+  The following files contain redundant or unreferenced #include directives, often due to overlapping dependencies from PINS.h or ModeDisp.h.
 
 
-  1. Unused & Redundant Headers
-  Redundant inclusions increase compilation time and indicate a lack of centralized dependency management.
+   * `src/main.cpp`
+       * <BleMouse.h>, <BleKeyboard.h>: Redundant; already provided by PINS.h.
+   * `src/Modes/ModeData.cpp`
+       * <string>, <vector>: Redundant; already provided by ModeDisp.h.
+       * <BleKeyboard.h>: Redundant; provided via PINS.h through ModeDisp.h.
+       * dec2bin.h: Unreferenced in this implementation file.
+   * `src/Modes/ModeSwitcher.cpp`
+       * <string>, <vector>: Redundant; provided by ModeDisp.h.
+       * <BleKeyboard.h>: Redundant; provided by PINS.h.
+       * <CUSwait.h>: Redundant; provided by PINS.h.
+   * `src/Analog/Pot.cpp`
+       * <BleKeyboard.h>: Redundant; provided by PINS.h.
+   * `src/Analog/mouseButtons.cpp`
+       * <BleMouse.h>, <BleKeyboard.h>: Redundant; provided by PINS.h.
+   * `src/Analog/Joystick.cpp`
+       * <BleMouse.h>, <BleKeyboard.h>: Redundant; provided by PINS.h.
+   * `src/misc/debounce.cpp`
+       * <BleMouse.h>, <BleKeyboard.h>: Redundant; provided by PINS.h.
+   * `src/misc/pin_setup.cpp`
+       * <Arduino.h>, ResponsiveAnalogRead.h, <BleMouse.h>, <BleKeyboard.h>: All redundant; already included within PINS.h.
+
+  2. Unused Variables
+  These variables are declared and/or initialized but are never utilized in the active runtime logic.
 
 
+   * `src/Analog/mouseButtons.cpp`
+       * unsigned int Tracking_Start_R: Initialized to 0 but never read or updated.
+       * bool Tracking_stat_R: Declared but never used.
+       * bool hold_Engaged_R: Declared but never used.
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ~Acounted
 
-  ┌───────────────────────────────┬───────────────────────────────────────────┬────────────────────────────────────────────────────────┐
-  │ File Path                     │ Redundant / Unused Headers                │ Context                                                │
-  ├───────────────────────────────┼───────────────────────────────────────────┼────────────────────────────────────────────────────────┤
-  │ src/main.cpp                │ <BleMouse.h>, <BleKeyboard.h>         │ Already provided by PINS.h.                          │
-  │ src/Analog/mouseButtons.cpp │ <BleMouse.h>, <BleKeyboard.h>,        │ PINS.h covers BLE headers; JOY.h is redundant as   │
-  │                               │ JOY.h                                   │ implementation is local or circular.                   │
-  │ src/Modes/ModeSwitcher.cpp  │ <BleKeyboard.h>, <string>, <vector> │ <string> and <vector> are already in ModeDisp.h. │
-  │ src/Modes/ModeData.cpp      │ <string>, <vector>,                   │ Heavy overlap with ModeDisp.h and PINS.h.          │
-  │                               │ <BleKeyboard.h>, dec2bin.h            │                                                        │
-  │ include/JOY.h               │ include <JOY.h>                         │ Recursive inclusion (guarded, but unnecessary).        │
-  │ src/Analog/Pot.cpp          │ <BleKeyboard.h>                         │ Redundant inclusion.                                   │
-  └───────────────────────────────┴───────────────────────────────────────────┴────────────────────────────────────────────────────────┘
+   * `src/Analog/Joystick.cpp`
+       * int Threashold_Joy: Declared and initialized (150) but only exists within commented-out debug code.
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ~Acounted // it was a debug variable
 
-  ---
+   * `src/Modes/ModeSwitcher.cpp`
+       * bool Prev_Butt_state: Initialized to HIGH and used in a condition, but never updated to Current_Butt_state. This prevents the
+         "once-per-press" logic from working correctly, effectively making it a constant.
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ~Acounted // it dosent work
 
-
-  2. Variable Usage Analysis
-  Identification of unused, misused, or poorly scoped variables.
-
-
-
-  ┌───────────────────────────────┬──────────────────────┬─────────────────────────────────────────────────────────────────────────────────────┐
-  │ File Path                     │ Symbol               │ Finding                                                                             │
-  ├───────────────────────────────┼──────────────────────┼─────────────────────────────────────────────────────────────────────────────────────┤
-  │ src/Modes/ModeSwitcher.cpp  │ led_array_state    │ Global variable used as a temporary scratchpad in Mode_show_bin. Should be local. │
-  │ src/Analog/Joystick.cpp     │ Threashold_Joy     │ Declared and initialized (150) but only used in commented-out debug code.         │
-  │ src/Analog/Pot.cpp          │ prev_Time_stamp    │ Logic Error: Reset to 0 at the end of pot_update, bypassing the 40ms rate   │
-  │                               │                      │ limit after the first run.                                                          │
-  │ src/Analog/Pot.cpp          │ sensi_vol          │ Constant value (1) that could be a constexpr or #define to save RAM.          │
-  │ include/PINS.h              │ buttons[12]        │ Extern declaration for a fixed configuration array; could be const to reside in   │
-  │                               │                      │ Flash.                                                                              │
-  │ src/Analog/mouseButtons.cpp │ Tracking_Start_L/R │ Used unsigned int instead of unsigned long. Risks overflow issues with          │
-  │                               │                      │ millis().                                                                         │
-  └───────────────────────────────┴──────────────────────┴─────────────────────────────────────────────────────────────────────────────────────┘
-
+   * `include/PINS.h`
+       * extern custom_wait wait_mod: Declared in the header but never defined or used in any source file.
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ~Acounted // was not neeeded latter
 
 
   ---
 
   3. Optimization Scopes
-  Architectural inefficiencies and opportunities for performance/memory improvements.
 
 
-  A. Blocking Calls (Critical)
-  The use of delay() halts the entire execution loop, causing unresponsive inputs or stuttering in BLE HID reports.
-   - `src/Modes/ModeSwitcher.cpp`: delay(200) during mode switching prevents simultaneous button presses or joystick movement.
-   - `src/Analog/mouseButtons.cpp`: delay(90) during mouse clicks creates noticeable lag in cursor tracking.
-   - Recommendation: Implement a non-blocking state machine using millis() timers.
+  Blocking Methods
+   * `src/Modes/ModeSwitcher.cpp`: delay(150) in Mode_switch(). This stalls the entire execution loop, preventing joystick movement or button
+     processing for 150ms after a mode change.
+   * `src/misc/debounce.cpp`: delay(20) in trigger_action(). While small, this adds latency to every button click event.
+   * Recommendation: Replace these with non-blocking timers using the existing custom_wait class or millis().
 
 
-  B. Data Type & Memory Efficiency
-   - Timestamp Types: Throughout the project (e.g., mouseButtons.cpp), timing variables use unsigned int. While ESP32 int is 32-bit, standard
-     practice for millis() is unsigned long to ensure architectural portability and clarity.
-   - Global Variable Bleeding: Variables like Current_Butt_state and led_array_state are global but only relevant to specific logic blocks. Moving
-     these to static or private class members would reduce namespace pollution.
-   - Floating Point Usage: snapMultiplier in PINS.h is a float. If used in hot loops with ResponsiveAnalogRead, ensure it's necessary or consider
-     fixed-point math if RAM/CPU pressure increases.
+  Data Type Risks
+   * `include/CUSwait.h`: int wait_time is used for millisecond intervals. While sufficient for short durations on ESP32 (32-bit int), it is
+     standard practice to use unsigned long for all timing-related variables to prevent overflow issues and maintain architectural consistency
+     with millis().
+   * `src/misc/pin_setup.cpp`: snapMultiplier is used in global constructors (Joy_Hor_Res, etc.) before it is explicitly initialized to 0.01
+     further down the file. This risks the "Static Initialization Order Fiasco," where the objects might be initialized with a default 0.0 value
+     instead of the intended 0.01.
 
 
-  C. Algorithmic Inefficiencies
-   - Linear Search (`SearchNset`): Uses a for loop to find modes by ID. While negligible for 3 modes, using a std::map<int, mode*> or direct array
-     indexing would be more idiomatic and scalable.
-   - Redundant State Sync: Mode_show() and Mode_show_bin() call setCurSrl() repeatedly, which performs an indirect method call. The curr_srl value
-     should be cached or passed as a parameter.
+  Architectural Inefficiencies
+   * Heavy Header Dependencies: ModeDisp.h and PINS.h are included in nearly every file, pulling in the entire BleMouse and BleKeyboard libraries
+     repeatedly. This increases compile times and creates tight coupling.
+   * Binary Display Logic: src/misc/dec2bin.cpp uses a decimal integer to represent binary digits (e.g., decimal 111 to represent 0b111). This is
+     computationally inefficient and limits the output to 10 digits before overflowing a standard int. For bitwise operations, standard
+     mask-and-shift operations should be used.
+   * PlatformIO Configuration: The platformio.ini file lacks explicit optimization flags. Adding build_flags = -Os would ensure the compiler
+     prioritizes a smaller binary footprint, which is beneficial for BLE-enabled ESP32 projects.
 
-
-  D. Build Configuration
-   - Compiler Flags: The platformio.ini lacks optimization flags. Adding build_flags = -Os would significantly reduce the Flash footprint by
-     optimizing for size, which is critical for BLE-enabled ESP32 projects where the BT stack consumes significant memory.
-
-
-  ---
-  Summary of Impact: The codebase is functional but suffers from significant "Stop-the-world" latency due to delay() calls and minor memory
-  inefficiencies. Centralizing headers in PINS.h and fixing the pot_update timestamp logic are the highest-priority maintenance tasks.
+-- Generated with Gemini CLI 0.31.0

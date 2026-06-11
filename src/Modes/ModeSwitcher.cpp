@@ -14,7 +14,7 @@
 #define setCurSrl() (curr_srl = Current_config->getSerial())
 
 bool Current_Butt_state;
-bool Prev_Butt_state = HIGH;
+// bool Prev_Butt_state = HIGH;
 int led_array_state = 0;
 
 int mode::count = 1;
@@ -49,11 +49,9 @@ void Mode_switch(){
     setCurSrl();
     int maxCount = mode::getCount() - 1;
     Current_Butt_state = digitalRead(BUTTON_TOGGLE_MACRO);
-    if(Current_Butt_state == LOW && Prev_Butt_state == HIGH){
+    // if condition had a Prev_Butt_state checkpoint
+    if(Current_Butt_state == LOW){
         Serial.println("Macro Button presed");
-
-        
-
         if(curr_srl < maxCount){
             SearchNset(curr_srl + 1);
         }else if(curr_srl == maxCount){
@@ -65,10 +63,9 @@ void Mode_switch(){
         Serial.print("||Serial : ");
         Serial.print(Current_config->getSerial());
         Serial.println("");
-        delay(150);
-
+        delay(200);
     }
-
+    // Prev_Butt_state = Current_Butt_state;
 }
 
 
