@@ -1,34 +1,56 @@
 #include <Arduino.h>
+#include <string>
+#include <vector>
+#include <BleKeyboard.h>
+
+
 #include <PINS.h>
 #include <POT.h>
 #include <JOY.h>
 #include <Butt_matrix.h>
 #include <ModeDisp.h>
 
+
+
+
 void run_def(){
+    // Serial.println("Running default config - 1");
     joy_state_update();
     pot_update();
     run_matrix();
 }
 
 void run_gaming(){
+    // Serial.println("Running gaming config - 2");
     joy_state_update();
     pot_update();
     run_matrix();
 }
 
 void run_media(){
+    // Serial.println("Running Media config - 3");
     joy_state_update();
     pot_update();
     run_matrix();
 }
 
-// Set up the static member tracker initial value
+// void run_midi(){
+//     // Serial.println("Running Media config - 3");
+//     joy_state_update();
+
+// }
+
 int mode::count = 1;
 
-mode def("Default", &run_def);
-mode gaming("Gaming", &run_gaming);
-mode media("Media", &run_media);
+
+mode def("Default",&run_def);
+
+mode gaming("Gaming",&run_gaming);
+
+mode media("Media",&run_media);
+
+// mode midi("Midi",&run_midi);
+
 
 // Global vector layout initialized as an empty shell
 std::vector<mode*> mode_list_vec;

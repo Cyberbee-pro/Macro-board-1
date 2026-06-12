@@ -3,9 +3,12 @@
 
 #include <Arduino.h>
 #include <PINS.h>
-#include <JOY.h>
 
 extern int Threashold_Joy;
+extern int Curr_Joy_Y;
+extern int Curr_Joy_X;
+extern int Move_Y;
+extern int Move_X;
 
 void joy_state_update(void (*Call_inp)() = nullptr);
 

@@ -5,7 +5,7 @@
 
 class custom_wait{
     private:
-    int wait_time;
+    unsigned long int wait_time;
     bool isActive;
     unsigned long int start_time;
     
