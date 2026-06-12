@@ -24,14 +24,15 @@ void run_gaming(){
     // Serial.println("Running gaming config - 2");
     joy_state_update();
     pot_update();
-    run_matrix();
+
 }
 
 void run_media(){
     // Serial.println("Running Media config - 3");
     joy_state_update();
     pot_update();
-    run_matrix();
+
+
 }
 
 // void run_midi(){

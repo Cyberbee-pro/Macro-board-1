@@ -1,10 +1,8 @@
 #include <Arduino.h>
-#include <BleKeyboard.h>
-#include <BleMouse.h>
-#include <debounce.h>
+
 #include <PINS.h>
 
-// debounce button;
+
 
 void (*call_mat)() = nullptr;
 
@@ -13,9 +11,6 @@ void Handle_T1(){
     if(LOW == digitalRead(KEY_TOP_LEFT)){
         Serial.println("T1");
     }
-
-    
-
 }
 void Handle_T2(){
         if(LOW == digitalRead(KEY_TOP_MID)){

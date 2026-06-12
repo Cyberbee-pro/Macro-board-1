@@ -2,29 +2,20 @@
 #include <BleMouse.h>
 #include <BleKeyboard.h>
 #include <debounce.h>
+#include <PINS.h>
 #include <CUSwait.h>
 
 
 
-debounce::debounce(BleMouse *target_mouse, uint8_t pin, byte butt_args):wait_time(80)
+debounce::debounce(Input_Interface type, uint8_t pin, byte butt_args):wait_time(80)
 {
     this->pin = pin;
-    this->target_mouse = target_mouse;
-    this->target_keyboard = nullptr;
+    this->type = type;
     this->butt_args = butt_args;
     this->hold_Engaged = false;
     this->Tracking_Status = false;
 }
 
-debounce::debounce(BleKeyboard *target_keyboard, uint8_t pin, byte butt_args):wait_time(80)
-{
-    this->pin = pin;
-    this->target_mouse = nullptr;
-    this->target_keyboard = target_keyboard;
-    this->butt_args = butt_args;
-    this->hold_Engaged = false;
-    this->Tracking_Status = false;
-}
 
 
 void debounce::trigger_action()
@@ -37,44 +28,41 @@ void debounce::trigger_action()
         wait_time.start();
 
 
-            if (nullptr != target_mouse)
+            if (type == Mouse)
             {
-                target_mouse->click(butt_args);
+                bleMouse.click(butt_args);
             }
-            else if (nullptr != target_keyboard)
+            else if (type == Keyboard)
             {
-                target_keyboard->write(butt_args);
+                bleKeyboard.write(butt_args);
             }
             Serial.println("Button Clicked");
-        delay(35);
-        // if(!wait_time_small.is_Time_Enlapsed()){
-        //     return;
-        // }
+        delay(20);
     }
     else if ( wait_time.is_Time_Enlapsed() && digitalRead(pin) == LOW && Tracking_Status && !hold_Engaged)
     {
-        if (nullptr != target_mouse)
+        if (type == Mouse)
         {
-            target_mouse->press(butt_args);
+            bleMouse.press(butt_args);
         }
-        else if (nullptr != target_keyboard)
+        else if (type == Keyboard)
         {
-            target_keyboard->press(butt_args);
+            bleKeyboard.press(butt_args);
         }
 
         Serial.println("Button Pressed");
             hold_Engaged = true;
     }
-    else if (digitalRead(pin) == HIGH && Tracking_Status)
+    else if (digitalRead(pin) == HIGH)
     {
 
-        if (nullptr != target_mouse)
+        if (type == Mouse)
         {
-            target_mouse->release(butt_args);
+            bleMouse.release(butt_args);
         }
-        else if (nullptr != target_keyboard)
+        else if (type == Keyboard)
         {
-            target_keyboard->release(butt_args);
+            bleKeyboard.release(butt_args);
         }
         Tracking_Status = false;
         hold_Engaged = false;
