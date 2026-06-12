@@ -31,8 +31,8 @@ BleKeyboard bleKeyboard("MacroBoard V1","Saa-labs",100);
 
 void pins_setup(){
 
-    // bleMouse.begin();
-    // bleKeyboard.begin();
+    bleMouse.begin();
+    bleKeyboard.begin();
 
     
     for(int i = 0 ; i < sizeof(LED)/sizeof(LED[0]) ; i++ ){

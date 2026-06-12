@@ -28,13 +28,13 @@ void loop() {
   // }
 
 
-  // if(bleMouse.isConnected()){
+  if(bleMouse.isConnected()){
   Mode_switch();
   Mode_run();
   Mode_show();
-  // }
-  // else{
-  //   Serial.println("Macroboard is not connected , waiting for connection. . . .");
-  //   delay(5000);
-  // }
+  }
+  else{
+    Serial.println("Macroboard is not connected , waiting for connection. . . .");
+    delay(5000);
+  }
 }
