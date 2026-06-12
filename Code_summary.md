@@ -6,6 +6,8 @@
   The project contains several files with overlapping #include directives. Since PINS.h and ModeDisp.h already act as master headers for many
   dependencies, the following should be removed:
 
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ~ALL ISSUES Acounted 
+
 
    * `src/main.cpp`: Delete <BleMouse.h>, <BleKeyboard.h> (Both provided by PINS.h).
    * `src/Modes/ModeData.cpp`: Delete <string>, <vector> (Provided by ModeDisp.h), and <BleKeyboard.h> (Provided by PINS.h).
@@ -47,6 +49,7 @@
   source/header files to minimize the firmware's compilation footprint.
 
 
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ~ALL ISSUES Acounted 
 
 
 

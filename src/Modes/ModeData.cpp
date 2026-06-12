@@ -6,7 +6,6 @@
 #include <JOY.h>
 #include <Butt_matrix.h>
 #include <ModeDisp.h>
-#include <dec2bin.h>
 
 
 

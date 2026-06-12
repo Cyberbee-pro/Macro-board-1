@@ -2,8 +2,6 @@
 #include <PINS.h>
 #include <POT.h>
 #include <ModeDisp.h>
-#include <dec2bin.h>
-
 #define setCurSrl() (curr_srl = Current_config->getSerial())
 
 bool Current_Butt_state;
