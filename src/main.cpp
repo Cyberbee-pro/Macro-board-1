@@ -4,6 +4,7 @@
 #include <POT.h>
 #include <JOY.h>
 #include <ModeDisp.h>
+#include <SensorDebug.h>
 
 void setup()
 {
@@ -12,21 +13,22 @@ void setup()
   Serial.begin(115200);
   populate_modes();
   pins_setup();
+  sensor_debug_setup();
 }
 
 void loop()
 {
-  // put your main code here, to run repeatedly:
-  // FN_led_pot();
-  // if (digitalRead(KEY_TOP_LEFT) == LOW) {
-  //   // Fire your target macro trigger event profile here
-  //   Serial.println("Top Left Button Action Activated!");
-  // }
+  if (SENSOR_DEBUG_MODE)
+  {
+    joy_state_update();
+    pot_update();
+    sensor_debug_log();
+    delay(20);
+    return;
+  }
 
   if (bleMouse.isConnected())
   {
-    Serial.println("TRY work");
-
     Mode_switch();
     Mode_run();
     Mode_show();

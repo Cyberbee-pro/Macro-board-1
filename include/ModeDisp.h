@@ -6,6 +6,8 @@
 #include <PINS.h>
 #include <string>
 
+#define setCurSrl() (curr_srl = Current_config->getSerial())
+
 extern bool Current_Butt_state;
 extern bool Prev_Butt_state;
 
@@ -45,6 +47,10 @@ class mode {
 
 extern mode def, gaming, media;
 extern std::vector<mode*> mode_list_vec;
+extern int curr_srl;
+extern mode *Current_config;
+
+
 
 void Mode_switch();
 void SearchNset(int target_srl);

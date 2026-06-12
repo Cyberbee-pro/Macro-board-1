@@ -1,4 +1,7 @@
 #include <Arduino.h>
+#include <string>
+#include <vector>
+#include <BleKeyboard.h>
 
 
 #include <PINS.h>
@@ -6,6 +9,7 @@
 #include <JOY.h>
 #include <Butt_matrix.h>
 #include <ModeDisp.h>
+
 
 
 
@@ -36,7 +40,6 @@ void run_media(){
 
 // }
 
-
 int mode::count = 1;
 
 
@@ -48,15 +51,14 @@ mode media("Media",&run_media);
 
 // mode midi("Midi",&run_midi);
 
-// 🟢 Declare the vector empty at static compile time
+
+// Global vector layout initialized as an empty shell
 std::vector<mode*> mode_list_vec;
 
-// 🟢 Create a controlled runtime function to assign pointers safely in setup
+// Populated sequentially during setup stage
 void populate_modes() {
-    mode_list_vec.clear(); // Ensure a clean layout slate
+    mode_list_vec.clear();
     mode_list_vec.push_back(&def);
     mode_list_vec.push_back(&gaming);
     mode_list_vec.push_back(&media);
 }
-
-// std::vector<mode*> mode_list_vec = {&def,&gaming,&media};

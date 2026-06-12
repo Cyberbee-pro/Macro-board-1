@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <PINS.h>
 #include <JOY.h>
+#include <SensorDebug.h>
 
 // int Threashold_Joy = 150; // Increased to handle raw hardware noise cushions
 int Sensi = 15; 
@@ -18,19 +19,19 @@ void joy_state_update(void (*call_inp)()){
     if (call_inp != nullptr) {
         call_joy = call_inp;
     }
-    // 1. Process Vertical Axis (Y-Axis)
+
     Joy_Ver_Res.update();
-    Curr_Joy_Y = Joy_Ver_Res.getValue();
-    Move_X = map(Curr_Joy_X,0,4095,-Sensi,Sensi);
-    
-    // 2. Process Horizontal Axis (X-Axis)
     Joy_Hor_Res.update();
+
+    Curr_Joy_Y = Joy_Ver_Res.getValue();
     Curr_Joy_X = Joy_Hor_Res.getValue();
+
+    Move_X = map(Curr_Joy_X,0,4095,-Sensi,Sensi);
     Move_Y = map(Curr_Joy_Y,0,4095,-Sensi,Sensi);
 
-    joy_run();
-
-    // delay(50);
+    if (!SENSOR_DEBUG_MODE) {
+        joy_run();
+    }
 }
 
 void joy_run(){
