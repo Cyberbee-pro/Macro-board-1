@@ -8,10 +8,10 @@
 #include <CUSwait.h>
 
 
-enum Input_Interface {Mouse,Keyboard};
+// enum Input_Interface {Mouse,Keyboard};
 
-constexpr Input_Interface mouse = Input_Interface::Mouse;
-constexpr Input_Interface keyboard = Input_Interface::Keyboard;
+// constexpr Input_Interface mouse = Input_Interface::Mouse;
+// constexpr Input_Interface keyboard = Input_Interface::Keyboard;
 
 
 
@@ -22,15 +22,16 @@ class debounce{
     custom_wait wait_time;
     // custom_wait wait_time_small;
     bool Tracking_Status,hold_Engaged ;
-    Input_Interface type;
+    // Input_Interface type;
+    BleMouse *target_mouse;
+    BleKeyboard *target_keyboard;
 
     protected :
-
-
     void trigger_action();
 
     public :
-    debounce(Input_Interface type, uint8_t pins,byte butt_args);
+    debounce(BleMouse *target_mouse, uint8_t pins,byte butt_args);
+    debounce(BleKeyboard *target_keyboard, uint8_t pins,byte butt_args);
 
     void run_process();
 

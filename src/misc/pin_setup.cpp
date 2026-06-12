@@ -4,6 +4,8 @@
 #include <BleMouse.h>
 #include <BleKeyboard.h>
 
+float snapMultiplier = 0.01;
+
 int LED[3] = { 32, 33, 25};
 
 int buttons[12] = {
@@ -26,7 +28,6 @@ BleMouse bleMouse("MacroBoard V1","Saa-labs",100);
 BleKeyboard bleKeyboard("MacroBoard V1","Saa-labs",100);
 
 
-float snapMultiplier = 0.01;
 
 void pins_setup(){
 
