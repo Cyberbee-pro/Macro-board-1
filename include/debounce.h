@@ -20,6 +20,7 @@ class debounce{
     uint8_t pin;
     byte butt_args;
     custom_wait wait_time;
+    // custom_wait wait_time_small;
     bool Tracking_Status,hold_Engaged ;
     Input_Interface type;
 

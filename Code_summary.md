@@ -68,7 +68,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ~Acounted //its mo
 
    * `src/misc/debounce.cpp`: delay(20) in trigger_action(). While small, this adds latency to every button click event.
    * Recommendation: Replace these with non-blocking timers using the existing custom_wait class or millis().
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ~Acounted //millis was not working but will try
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ~Acounted //millis is working button lockup risk so delay is more preffered 
 
 
   Data Type Risks

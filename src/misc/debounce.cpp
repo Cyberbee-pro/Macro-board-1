@@ -38,6 +38,9 @@ void debounce::trigger_action()
             }
             Serial.println("Button Clicked");
         delay(20);
+        // if(!wait_time_small.is_Time_Enlapsed()){
+        //     return;
+        // }
     }
     else if ( wait_time.is_Time_Enlapsed() && digitalRead(pin) == LOW && Tracking_Status && !hold_Engaged)
     {
