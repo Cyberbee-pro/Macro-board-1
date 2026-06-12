@@ -42,31 +42,11 @@ void joy_run(){
 }
 
 void joy_run_def(){
-    // if(Curr_Joy_Y > 2048 + Threashold_Joy){
-    //     Serial.println("UP");
-    // } else if (Curr_Joy_Y < 2048 - Threashold_Joy) {
-    //     Serial.println("Down");
-    // } else {
-    //     // Serial.print("Y Resting               |");
-    // }
-
-    // if(Curr_Joy_X > 2048 + Threashold_Joy){
-    //     Serial.println("Left");
-    // } else if (Curr_Joy_X < 2048 - Threashold_Joy) {
-    //     Serial.println("Right");
-    // } else {
-    //     // Serial.print("|         X Resting");
-    // }
-
-    // Serial.println(Move_X);
-    // Serial.println(Move_Y);
-
-
-
-    // Serial.println("");
-
-    bleMouse.move(Move_X,-Move_Y,0);
+    // 🟢 ONLY send Bluetooth packets if there is active movement out of the dead-zone
+    if (Move_X != 0 || Move_Y != 0) {
+        bleMouse.move(Move_X, -Move_Y, 0);
+    }
+    
     Click_Left_reg();
     Click_Right_reg();
-
 }

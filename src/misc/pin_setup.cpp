@@ -24,28 +24,32 @@ BleMouse bleMouse("MacroBoard V1","Saa-labs",100);
 BleKeyboard bleKeyboard("MacroBoard V1","Saa-labs",100);
 
 
-
 void pins_setup(){
 
     bleMouse.begin();
     bleKeyboard.begin();
+    Serial.println("Macroboard V1: Advertising Started...");
 
-    
-    for(int i = 0 ; i < sizeof(LED)/sizeof(LED[0]) ; i++ ){
-        pinMode(LED[i],OUTPUT);
+    pinMode(JOY_HOR, INPUT);
+    pinMode(JOY_VERT, INPUT);
+    pinMode(POT_SIG, INPUT);
+
+    // 🟢 Fix 1: Hardcode the loop bound to exactly 3 elements
+    for(int i = 0 ; i < 3 ; i++ ){
+        pinMode(LED[i], OUTPUT);
     }
 
-    for(int i = 0 ; i < sizeof(buttons)/sizeof(buttons[0]) ; i++ ){
-        pinMode(buttons[i],INPUT_PULLUP);
+    // 🟢 Fix 2: Hardcode the loop bound to exactly 12 elements
+    for(int i = 0 ; i < 12 ; i++ ){
+        pinMode(buttons[i], INPUT_PULLUP);
     }
-    //Joystick setup
+
+    // Joystick setup
     Joy_Hor_Res.setAnalogResolution(4095);
     Joy_Ver_Res.setAnalogResolution(4095);
 
-    //Potentiometer Setup
+    // Potentiometer Setup
     Pot_Sig_Res.setAnalogResolution(4095);
 
     wait_pot.start();
-
-
 }

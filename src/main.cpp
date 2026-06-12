@@ -5,18 +5,17 @@
 #include <JOY.h>
 #include <ModeDisp.h>
 
-
-
-
-void setup() {
+void setup()
+{
   // put your setup code here, to run once:
   // int result = myFunction(2, 3);
-  Serial.begin(115200);  
+  Serial.begin(115200);
+  populate_modes();
   pins_setup();
-
 }
 
-void loop() {
+void loop()
+{
   // put your main code here, to run repeatedly:
   // FN_led_pot();
   // if (digitalRead(KEY_TOP_LEFT) == LOW) {
@@ -24,13 +23,17 @@ void loop() {
   //   Serial.println("Top Left Button Action Activated!");
   // }
 
+  if (bleMouse.isConnected())
+  {
+    Serial.println("TRY work");
 
-  if(bleMouse.isConnected()){
-  Mode_switch();
-  Mode_run();
-  Mode_show();
+    Mode_switch();
+    Mode_run();
+    Mode_show();
+    delay(5);
   }
-  else{
+  else
+  {
     Serial.println("Macroboard is not connected , waiting for connection. . . .");
     delay(5000);
   }

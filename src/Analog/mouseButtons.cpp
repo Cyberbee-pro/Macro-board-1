@@ -4,7 +4,7 @@
 #include <debounce.h>
 
 debounce dl(&bleMouse,BUTTON_LEFT,MOUSE_LEFT);
-debounce dr(&bleKeyboard,BUTTON_RIGHT,MOUSE_RIGHT);
+debounce dr(&bleMouse,BUTTON_RIGHT,MOUSE_RIGHT);
 
 
 void Click_Left_reg(){
