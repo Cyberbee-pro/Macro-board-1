@@ -1,21 +1,14 @@
 #include <Arduino.h>
-#include <string>
-#include <vector>
-#include <BleKeyboard.h>
-
-
 #include <PINS.h>
 #include <POT.h>
 #include <ModeDisp.h>
 #include <dec2bin.h>
-#include <CUSwait.h>
-
 
 #define setCurSrl() (curr_srl = Current_config->getSerial())
 
 bool Current_Butt_state;
-// bool Prev_Butt_state = HIGH;
-int led_array_state = 0;
+bool Prev_Butt_state = HIGH;
+// int led_array_state = 0;
 
 int mode::count = 1;
 
@@ -49,8 +42,8 @@ void Mode_switch(){
     setCurSrl();
     int maxCount = mode::getCount() - 1;
     Current_Butt_state = digitalRead(BUTTON_TOGGLE_MACRO);
-    // if condition had a Prev_Butt_state checkpoint
-    if(Current_Butt_state == LOW){
+    // if condition had a Prev_Butt_state checkpoint but its not needed (working even without it)
+    if(Current_Butt_state == LOW && Prev_Butt_state == HIGH){
         Serial.println("Macro Button presed");
         if(curr_srl < maxCount){
             SearchNset(curr_srl + 1);
@@ -63,9 +56,9 @@ void Mode_switch(){
         Serial.print("||Serial : ");
         Serial.print(Current_config->getSerial());
         Serial.println("");
-        delay(200);
+        delay(100);
     }
-    // Prev_Butt_state = Current_Butt_state;
+    Prev_Butt_state = Current_Butt_state;
 }
 
 
@@ -102,10 +95,15 @@ void Mode_show_bin(){
     for(int i = 0; i<3;i++){
         digitalWrite(LED[i],LOW);
     }
-    curr_srl = setCurSrl();
-    led_array_state = dec2bin(curr_srl);
-    for(int i = 2;led_array_state>0;i--){
-        digitalWrite(LED[i],led_array_state%10);
-        led_array_state/=10;
-    }
+//     curr_srl = setCurSrl();
+//     led_array_state = dec2bin(curr_srl);
+//     for(int i = 2;led_array_state>0;i--){
+//         digitalWrite(LED[i],led_array_state%10);
+//         led_array_state/=10;
+//     }
+
+    digitalWrite(LED[2], (curr_srl & 0x01) ? HIGH : LOW);
+    digitalWrite(LED[1], (curr_srl & 0x02) ? HIGH : LOW);
+    digitalWrite(LED[0], (curr_srl & 0x04) ? HIGH : LOW);
+
 }

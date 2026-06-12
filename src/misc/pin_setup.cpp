@@ -1,8 +1,4 @@
-#include <Arduino.h>
 #include <PINS.h>
-#include <ResponsiveAnalogRead.h>
-#include <BleMouse.h>
-#include <BleKeyboard.h>
 
 float snapMultiplier = 0.01;
 

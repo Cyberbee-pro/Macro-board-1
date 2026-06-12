@@ -19,6 +19,53 @@ debounce buttonB3(&bleKeyboard,KEY_BOT_RIGHT,KEY_RIGHT_ARROW);
 
 void (*call_mat)() = nullptr;
 
+
+void run_matrix_def(){
+    // Serial.println("\nDefault Matrix running");
+    // Handle_T1();
+    // Handle_T2();
+    // Handle_T3();
+
+    // Handle_M1();
+    // Handle_M2();
+    // Handle_M3();
+
+    // Handle_B1();
+    // Handle_B2();
+    // Handle_B3();
+
+    buttonT1.run_process();
+    buttonT2.run_process();
+    buttonT3.run_process();
+
+    buttonM1.run_process();
+    buttonM2.run_process();
+    buttonM3.run_process();
+
+    buttonB1.run_process();
+    buttonB2.run_process();
+    buttonB3.run_process();
+
+
+
+
+}
+
+
+void run_matrix(void (*input_profile)()){
+
+    if(nullptr != input_profile){
+        call_mat = input_profile;
+    }
+
+    if(nullptr != call_mat){
+        call_mat();
+    }else{
+        run_matrix_def();
+    }
+}
+
+
 // consider those as debug codes
 // void Handle_T1(){
 //     if(LOW == digitalRead(KEY_TOP_LEFT)){
@@ -70,45 +117,3 @@ void (*call_mat)() = nullptr;
 //         Serial.println("B3");
 //     }
 // }
-
-
-void run_matrix_def(){
-    // Serial.println("\nDefault Matrix running");
-    // Handle_T1();
-    // Handle_T2();
-    // Handle_T3();
-
-    // Handle_M1();
-    // Handle_M2();
-    // Handle_M3();
-
-    // Handle_B1();
-    // Handle_B2();
-    // Handle_B3();
-
-    buttonT1.run_process();
-    buttonT2.run_process();
-    buttonT3.run_process();
-
-    buttonM1.run_process();
-    buttonM2.run_process();
-    buttonM3.run_process();
-
-    buttonB1.run_process();
-    buttonB2.run_process();
-    buttonB3.run_process();
-
-
-
-
-}
-
-
-void run_matrix(void (*call_mat)()){
-    if(nullptr != call_mat){
-        call_mat();
-    }else{
-        run_matrix_def();
-    }
-}
-

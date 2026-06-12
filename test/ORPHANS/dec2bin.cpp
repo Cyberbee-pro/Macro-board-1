@@ -1,4 +1,4 @@
-#include <dec2bin.h>
+#include "dec2bin.h"
 
 int dec2bin(int Dec){
     int bin = 0,i=2 ;

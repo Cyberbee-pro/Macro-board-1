@@ -1,7 +1,4 @@
 #include <Arduino.h>
-#include <string>
-#include <vector>
-#include <BleKeyboard.h>
 
 
 #include <PINS.h>
