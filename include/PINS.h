@@ -24,8 +24,8 @@ extern BleKeyboard bleKeyboard;
 
 // Row 3 (Bottom)
 #define KEY_BOT_LEFT    4  // btn3
-#define KEY_BOT_MID    16  // btn2
-#define KEY_BOT_RIGHT  17  // btn9
+#define KEY_BOT_MID    13  // btn2
+#define KEY_BOT_RIGHT  12  // btn9
 
 
 #define BUTTON_TOGGLE_MACRO 14

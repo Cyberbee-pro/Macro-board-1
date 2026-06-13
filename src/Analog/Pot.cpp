@@ -6,7 +6,7 @@
 #include <SensorDebug.h>
 
 
-int Threashold = 15;
+int Threashold = 100;
 int Prev_Pot_state = 0;
 int Curr_Pot_state = 0;
 int Pot_Raw_state = 0;
@@ -66,7 +66,7 @@ void pot_run(){
         call();
     }
 
-    // prev_Time_stamp = 0;
+    // pre      v_Time_stamp = 0;
 
 
 }
