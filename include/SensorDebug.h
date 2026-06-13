@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-constexpr bool SENSOR_DEBUG_MODE = true;
+constexpr bool SENSOR_DEBUG_MODE = false;
 
 // Raw mode is useful when checking ADC wiring and noise.
 // Processed mode mirrors the filtered value returned by ResponsiveAnalogRead::getValue().
