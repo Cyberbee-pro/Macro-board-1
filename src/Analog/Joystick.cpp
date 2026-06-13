@@ -3,7 +3,8 @@
 #include <JOY.h>
 #include <SensorDebug.h>
 
-// int Threashold_Joy = 150; // Increased to handle raw hardware noise cushions
+int Threashold_Joy_UP   = 3100; // Increased to handle raw hardware noise cushions
+int Threashold_Joy_DOWN = 1200; // Increased to handle raw hardware noise cushions
 int Sensi = 15; 
 
 
@@ -16,18 +17,24 @@ int Move_X = 0;
 void (*call_joy)() = nullptr;
 
 void joy_state_update(void (*call_inp)()){ 
+    
+    Joy_Ver_Res.update();
+    Joy_Hor_Res.update();
+        
+    // Use the filtered value here so control movement matches the debug "processed" mode.
+    Curr_Joy_Y = Joy_Ver_Res.getValue();
+    Curr_Joy_X = Joy_Hor_Res.getValue();
+    if(Curr_Joy_X < Threashold_Joy_DOWN || Curr_Joy_X > Threashold_Joy_UP || Curr_Joy_Y < Threashold_Joy_DOWN || Curr_Joy_Y > Threashold_Joy_UP  ){
+    Move_X = map(Curr_Joy_X,0,4095,-Sensi,Sensi);
+    Move_Y = map(Curr_Joy_Y,0,4095,-Sensi,Sensi);
+    }else{
+        Move_X = 0;
+        Move_Y = 0;
+    }
+
     if (call_inp != nullptr) {
         call_joy = call_inp;
     }
-
-    Joy_Ver_Res.update();
-    Joy_Hor_Res.update();
-
-    Curr_Joy_Y = Joy_Ver_Res.getValue();
-    Curr_Joy_X = Joy_Hor_Res.getValue();
-
-    Move_X = map(Curr_Joy_X,0,4095,-Sensi,Sensi);
-    Move_Y = map(Curr_Joy_Y,0,4095,-Sensi,Sensi);
 
     if (!SENSOR_DEBUG_MODE) {
         joy_run();
