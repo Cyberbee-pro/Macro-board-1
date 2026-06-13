@@ -4,7 +4,6 @@ on:
   push:
     branches: [ main, master ]
 
-# 🟢 PATCH 1: Force GitHub to grant this specific runner write permissions to repository contents
 permissions:
   contents: write
 
@@ -20,7 +19,6 @@ jobs:
           pacman -Syu --noconfirm
           pacman -S --noconfirm git python python-pip gcc
 
-      # CRITICAL: We need a secure checkout token to let the bot write data back
       - name: Checkout Code Base
         uses: actions/checkout@v4
         with:
@@ -39,7 +37,6 @@ jobs:
           source .venv/bin/activate
           pio run
 
-      # 🟢 THE BOT IDENTITY: Force the automated container to log in as a user
       - name: GitHub-BIN-COMPILER
         run: |
           mkdir -p production_builds
@@ -53,7 +50,6 @@ jobs:
           
           if ! git diff --cached --quiet; then
             git commit -m "//: Automated Firmware Compile: Build Asset Update"
-            
             git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
             git push origin HEAD:${{ github.ref_name }}
           else

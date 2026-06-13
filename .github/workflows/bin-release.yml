@@ -1,0 +1,150 @@
+name: Firmware Release Router Execution
+
+on:
+  push:
+    branches: [ main, master ]
+
+permissions:
+  contents: write
+
+jobs:
+  route-release:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+
+    steps:
+      - name: Initialize Arch Package Repositories
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm git python python-pip gcc jq
+
+      - name: Checkout Code Base
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetches full tag history for accurate automatic versioning calculations
+
+      - name: Parse Versioning and Handle Edge Cases
+        id: versioning
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          
+          COMMIT_MSG="${{ github.event.head_commit.message }}"
+          echo "Processing Commit Message: $COMMIT_MSG"
+
+          # 🟢 FIX #1: The script sets the flags but NEVER calls exit 0 anymore.
+          # The entire workflow will flow straight through the compilation engine.
+          if [[ "$COMMIT_MSG" =~ -prod($|[[:space:]]) ]] || [[ "$COMMIT_MSG" =~ -noprod($|[[:space:]]) ]]; then
+            echo "SHOULD_RELEASE=true" >> $GITHUB_OUTPUT
+          else
+            echo "SHOULD_RELEASE=false" >> $GITHUB_OUTPUT
+            echo "No explicit release flags detected. Running compilation tracking check only."
+          fi
+
+          # Strict production flag isolation tracking
+          if [[ "$COMMIT_MSG" =~ -prod($|[[:space:]]) ]]; then
+            echo "IS_PRERELEASE=false" >> $GITHUB_OUTPUT
+          else
+            echo "IS_PRERELEASE=true" >> $GITHUB_OUTPUT
+          fi
+
+          # Safe trailing version regex capture
+          EXP_VERSION=$(echo "$COMMIT_MSG" | grep -oE -- '-[0-9]+$' | tr -d '-' || true)
+
+          if [ ! -z "$EXP_VERSION" ]; then
+            EXP_VERSION=$((10#$EXP_VERSION)) # Force base-10 numerical evaluation
+          fi
+
+          # Query existing tracking numbers from history
+          LATEST_TAG=$(git tag -l "v*" | sort -V | tail -n 1 || true)
+          
+          if [ -z "$LATEST_TAG" ]; then
+            BASE_MAJOR=1
+            BASE_MINOR=0
+            HAS_TAGS=false
+          else
+            HAS_TAGS=true
+            VERSION_NUM=${LATEST_TAG#v}
+            VERSION_NUM=$(echo "$VERSION_NUM" | cut -d- -f1)
+            
+            if [[ "$VERSION_NUM" == *.* ]]; then
+              BASE_MAJOR=$(echo "$VERSION_NUM" | cut -d. -f1)
+              BASE_MINOR=$(echo "$VERSION_NUM" | cut -d. -f2)
+            else
+              BASE_MAJOR=$VERSION_NUM
+              BASE_MINOR=0
+            fi
+          fi
+
+          # Calculate initial version string target
+          if [ ! -z "$EXP_VERSION" ]; then
+            TARGET_VERSION="$EXP_VERSION"
+          else
+            if [ "$HAS_TAGS" = "false" ]; then
+              TARGET_VERSION="1"
+            else
+              NEW_MINOR=$((BASE_MINOR + 1))
+              TARGET_VERSION="$BASE_MAJOR.$NEW_MINOR"
+            fi
+          fi
+
+          # 🛑 FIX #2: Universal Collision Firewall
+          # This loops through BOTH explicit overrides and auto-incremented versions dynamically
+          FINAL_TAG="v$TARGET_VERSION"
+          COUNTER=1
+          BASE_TARGET_VERSION="$TARGET_VERSION"
+
+          while git rev-parse "$FINAL_TAG" >/dev/null 2>&1; do
+            echo "⚠️ Tag $FINAL_TAG already exists in git tree! Recalculating safe offset build token..."
+            FINAL_TAG="v${BASE_TARGET_VERSION}-build${{ github.run_number }}-$COUNTER"
+            COUNTER=$((COUNTER + 1))
+          done
+          
+          echo "Final verified release target: $FINAL_TAG"
+          echo "TAG_NAME=$FINAL_TAG" >> $GITHUB_OUTPUT
+          echo "RELEASE_NAME=Firmware V${FINAL_TAG#v}" >> $GITHUB_OUTPUT
+
+      # ⚙️ THE INFRASTRUCTURE COMPILATION LOOPS (Always executes regardless of flags)
+      - name: Install PlatformIO Core CLI
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade platformio
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> $GITHUB_PATH
+
+      - name: Dynamically Compile PlatformIO Firmware Targets
+        id: pio_build
+        run: |
+          source .venv/bin/activate
+          
+          DEFAULT_ENV=$(grep -E '^\s*default_envs\s*=' platformio.ini | head -n 1 | cut -d= -f2 | tr -d ' ' || true)
+          
+          if [ -z "$DEFAULT_ENV" ]; then
+            PIO_ENV=$(grep -oE '^\[env:[^\]]+\]' platformio.ini | head -n 1 | tr -d '[]' | cut -d: -f2)
+          else
+            PIO_ENV=$DEFAULT_ENV
+          fi
+          
+          echo "Selected Compilation Target Environment: $PIO_ENV"
+          pio run -e "$PIO_ENV"
+          
+          echo "BINARY_PATH=.pio/build/$PIO_ENV/firmware.bin" >> $GITHUB_OUTPUT
+
+      # 🚀 DEPLOYMENT STAGE (Conditional Gate)
+      - name: Deploy Dynamic Release Configuration Page
+        # This execution gate isolates your release notes so they only fire when intended
+        if: steps.versioning.outputs.SHOULD_RELEASE == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.pio_build.outputs.BINARY_PATH }}
+          name: "${{ steps.versioning.outputs.RELEASE_NAME }}"
+          tag_name: "${{ steps.versioning.outputs.TAG_NAME }}"
+          prerelease: ${{ steps.versioning.outputs.IS_PRERELEASE }}
+          body: |
+            ## 🖥️ Automated Firmware Asset Production Build
+            This target firmware container was dynamically verified and successfully pushed via automated compilation channels.
+            
+            **Commit reference meta:** `${{ github.event.head_commit.message }}`
+          draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
