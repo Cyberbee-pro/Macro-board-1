@@ -26,7 +26,6 @@ BleKeyboard bleKeyboard("MacroBoard V1","Saa-labs",100);
 
 void pins_setup(){
 
-    bleMouse.begin();
     bleKeyboard.begin();
     Serial.println("Macroboard V1: Advertising Started...");
 
@@ -50,6 +49,8 @@ void pins_setup(){
 
     // Potentiometer Setup
     Pot_Sig_Res.setAnalogResolution(4095);
+
+    Pot_Sig_Res.update();
 
     wait_pot.start();
 }
