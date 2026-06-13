@@ -30,6 +30,7 @@ void pot_update(void (*call_inp)()){
 
     Pot_Sig_Res.update();
     Pot_Raw_state = Pot_Sig_Res.getRawValue();
+    // Map the filtered reading to a stable percentage for the active control profile.
     Curr_Pot_state = map(Pot_Sig_Res.getValue(),0,4095,0,100);
 
     if (!pot_initialized) {

@@ -4,12 +4,17 @@ from __future__ import annotations
 
 import argparse
 import csv
+import os
 from pathlib import Path
+
+# Matplotlib tries to cache fonts/config under the user's home directory by default.
+# This repository runs in a sandboxed environment, so we redirect that cache to /tmp.
+os.environ.setdefault("MPLCONFIGDIR", str(Path("/tmp") / "macroboard-matplotlib"))
 
 import matplotlib.pyplot as plt
 
 
-CSV_COLUMNS = (
+RAW_COLUMNS = (
     "ms",
     "joy_x_raw",
     "joy_y_raw",
@@ -22,8 +27,40 @@ CSV_COLUMNS = (
 )
 
 
-def parse_log(path: Path) -> list[dict[str, int]]:
+PROCESSED_COLUMNS = (
+    "ms",
+    "joy_x",
+    "joy_y",
+    "joy_x_step",
+    "joy_y_step",
+    "pot_data",
+)
+
+
+PROCESSED_VALUE_COLUMNS = (
+    "ms",
+    "joy_x",
+    "joy_y",
+    "joy_x_step",
+    "joy_y_step",
+    "pot_value",
+    "pot_pct",
+)
+
+
+def detect_columns(column_count: int) -> tuple[str, ...] | None:
+    if column_count == len(PROCESSED_COLUMNS):
+        return PROCESSED_COLUMNS
+    if column_count == len(PROCESSED_VALUE_COLUMNS):
+        return PROCESSED_VALUE_COLUMNS
+    if column_count == len(RAW_COLUMNS):
+        return RAW_COLUMNS
+    return None
+
+
+def parse_log(path: Path) -> tuple[list[dict[str, int]], tuple[str, ...]]:
     rows: list[dict[str, int]] = []
+    columns: tuple[str, ...] | None = None
 
     with path.open(newline="") as handle:
         for raw_line in handle:
@@ -34,7 +71,12 @@ def parse_log(path: Path) -> list[dict[str, int]]:
                 continue
 
             parts = next(csv.reader([line]))
-            if len(parts) != len(CSV_COLUMNS):
+            if columns is None:
+                columns = detect_columns(len(parts))
+                if columns is None:
+                    continue
+
+            if len(parts) != len(columns):
                 continue
 
             try:
@@ -42,9 +84,12 @@ def parse_log(path: Path) -> list[dict[str, int]]:
             except ValueError:
                 continue
 
-            rows.append(dict(zip(CSV_COLUMNS, values)))
+            rows.append(dict(zip(columns, values)))
 
-    return rows
+    if columns is None:
+        raise SystemExit(f"Unsupported CSV layout in {path}")
+
+    return rows, columns
 
 
 def mark_dropouts(ax, time_s: list[float], pot_raw: list[int], threshold: int) -> int:
@@ -67,40 +112,83 @@ def mark_dropouts(ax, time_s: list[float], pot_raw: list[int], threshold: int) -
     return dropout_runs
 
 
-def plot_file(path: Path, rows: list[dict[str, int]], output_path: Path, threshold: int) -> None:
+def plot_file(
+    path: Path,
+    rows: list[dict[str, int]],
+    columns: tuple[str, ...],
+    output_path: Path,
+    threshold: int,
+) -> None:
     time_s = [(row["ms"] - rows[0]["ms"]) / 1000.0 for row in rows]
-    pot_raw = [row["pot_raw"] for row in rows]
-    pot_pct_scaled = [row["pot_pct"] * 40.95 for row in rows]
-    joy_x_raw = [row["joy_x_raw"] for row in rows]
-    joy_y_raw = [row["joy_y_raw"] for row in rows]
+    is_raw_log = columns == RAW_COLUMNS
+    has_scaled_pot = "pot_pct" in columns
+
+    if is_raw_log:
+        pot_series = [row["pot_raw"] for row in rows]
+        joy_x = [row["joy_x_raw"] for row in rows]
+        joy_y = [row["joy_y_raw"] for row in rows]
+        pot_overlay = [row["pot_pct"] * 40.95 for row in rows]
+        pot_title = "raw ADC"
+        joy_title = "raw ADC"
+        joy_label_x = "joy_x_raw"
+        joy_label_y = "joy_y_raw"
+        pot_label = "pot_raw"
+    elif has_scaled_pot:
+        pot_series = [row["pot_value"] for row in rows]
+        joy_x = [row["joy_x"] for row in rows]
+        joy_y = [row["joy_y"] for row in rows]
+        pot_overlay = [row["pot_pct"] * 40.95 for row in rows]
+        pot_title = "processed ADC"
+        joy_title = "processed ADC"
+        joy_label_x = "joy_x"
+        joy_label_y = "joy_y"
+        pot_label = "pot_value"
+    else:
+        pot_series = [row["pot_data"] for row in rows]
+        joy_x = [row["joy_x"] for row in rows]
+        joy_y = [row["joy_y"] for row in rows]
+        pot_overlay = None
+        pot_title = "processed ADC"
+        joy_title = "processed ADC"
+        joy_label_x = "joy_x"
+        joy_label_y = "joy_y"
+        pot_label = "pot_data"
 
     fig, axes = plt.subplots(2, 1, figsize=(14, 8), sharex=True)
 
-    axes[0].plot(time_s, pot_raw, label="pot_raw", color="#0d6efd", linewidth=1)
-    axes[0].plot(time_s, pot_pct_scaled, label="pot_pct scaled", color="#fd7e14", linewidth=1, alpha=0.75)
-    axes[0].set_ylabel("Pot ADC")
+    axes[0].plot(time_s, pot_series, label=pot_label, color="#0d6efd", linewidth=1)
+    if pot_overlay is not None:
+        axes[0].plot(
+            time_s,
+            pot_overlay,
+            label="pot_pct scaled",
+            color="#fd7e14",
+            linewidth=1,
+            alpha=0.75,
+        )
+    axes[0].set_ylabel(f"Pot {pot_title}")
     axes[0].set_title(f"{path.name}: potentiometer and joystick capture")
     axes[0].grid(True, alpha=0.3)
     axes[0].legend(loc="upper right")
 
-    axes[1].plot(time_s, joy_x_raw, label="joy_x_raw", color="#198754", linewidth=1)
-    axes[1].plot(time_s, joy_y_raw, label="joy_y_raw", color="#dc3545", linewidth=1)
-    axes[1].set_ylabel("Joystick ADC")
+    axes[1].plot(time_s, joy_x, label=joy_label_x, color="#198754", linewidth=1)
+    axes[1].plot(time_s, joy_y, label=joy_label_y, color="#dc3545", linewidth=1)
+    axes[1].set_ylabel(f"Joystick {joy_title}")
     axes[1].set_xlabel("Time (s)")
     axes[1].grid(True, alpha=0.3)
     axes[1].legend(loc="upper right")
 
-    dropout_runs = mark_dropouts(axes[0], time_s, pot_raw, threshold)
-    mark_dropouts(axes[1], time_s, pot_raw, threshold)
+    dropout_runs = mark_dropouts(axes[0], time_s, pot_series, threshold)
+    mark_dropouts(axes[1], time_s, pot_series, threshold)
 
     fig.tight_layout()
     fig.savefig(output_path, dpi=170)
     plt.close(fig)
 
-    zero_count = sum(1 for value in pot_raw if value == 0)
+    zero_count = sum(1 for value in pot_series if value == 0)
     print(f"Saved plot: {output_path}")
     print(f"Samples: {len(rows)}")
-    print(f"Pot raw min/max: {min(pot_raw)} / {max(pot_raw)}")
+    print(f"Pot min/max: {min(pot_series)} / {max(pot_series)}")
     print(f"Pot zero samples: {zero_count}")
     print(f"Dropout runs below {threshold}: {dropout_runs}")
 
@@ -130,12 +218,12 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    rows = parse_log(args.input)
+    rows, columns = parse_log(args.input)
     if not rows:
         raise SystemExit(f"No valid sensor rows found in {args.input}")
 
     output_path = build_output_path(args.input, args.output)
-    plot_file(args.input, rows, output_path, args.dropout_threshold)
+    plot_file(args.input, rows, columns, output_path, args.dropout_threshold)
     return 0
 
 
