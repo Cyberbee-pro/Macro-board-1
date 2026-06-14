@@ -43,7 +43,7 @@ void debounce::trigger_action()
                 target_keyboard->write(butt_args);
             }
             Serial.println("Button Clicked");
-        delay(35);
+        delay(125);
         // if(!wait_time_small.is_Time_Enlapsed()){
         //     return;
         // }

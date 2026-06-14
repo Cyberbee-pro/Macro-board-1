@@ -1,4 +1,5 @@
 #include <PINS.h>
+#include <POT.h>
 
 float snapMultiplier = 0.01;
 
@@ -51,6 +52,7 @@ void pins_setup(){
     Pot_Sig_Res.setAnalogResolution(4095);
 
     Pot_Sig_Res.update();
+    pot_setup();
 
     wait_pot.start();
 }

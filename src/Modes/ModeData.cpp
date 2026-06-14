@@ -19,7 +19,7 @@ void run_gaming(){
 
 void run_media(){
     joy_state_update();
-    pot_update();
+    // pot_update();
     run_matrix();
 }
 
