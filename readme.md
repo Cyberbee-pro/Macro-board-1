@@ -13,7 +13,7 @@ A highly programmable, multi-layered custom hardware macro pad and controller bu
 
 ### Wokwi Circuit Layout
 <p align="center">
-   <img src="Images/wofi%20render.png" alt="Wokwi Circuit Render Layout" width="450" />
+   <img src="Images/Wokwi%20render%202.png" alt="Wokwi Circuit Render Layout" width="450" />
 </p>
 
 ---
