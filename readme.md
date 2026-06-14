@@ -76,3 +76,9 @@ This hardware definition layout maps your physical workspace directly to the cor
 * **KEY_BOT_LEFT**       `GPIO 4`  
 * **KEY_BOT_MID**        `GPIO 16`
 * **KEY_BOT_RIGHT**      `GPIO 17`
+
+
+# Future works 
+- more stable
+- implement 74HC595 shift register to control the LEDs
+- add two more buttons

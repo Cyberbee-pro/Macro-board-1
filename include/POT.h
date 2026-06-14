@@ -6,7 +6,10 @@ extern int Prev_Pot_state;
 extern int Curr_Pot_state;
 extern int Pot_Raw_state;
 extern int Threashold;
+extern int Curr_Knob_state;
+extern int Prev_Knob_state;
 
+void pot_setup();
 
 void pot_update(void (*call_inp)() = nullptr);
 
