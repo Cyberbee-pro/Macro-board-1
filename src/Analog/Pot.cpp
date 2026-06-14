@@ -10,7 +10,7 @@
 #define Pot_state_diff_no_abs() (Curr_Pot_state - Prev_Pot_state)
 #define Pot_Knob_diff() (abs(Prev_Knob_state - Curr_Knob_state))
 
-int Threashold = 5000;
+int Threashold = 30;
 int Prev_Pot_state = 0;
 int Curr_Pot_state = 0;
 int Pot_Raw_state = 0;
@@ -30,7 +30,7 @@ void pot_setup(){
     Pot_Raw_state =  Pot_Sig_Res.getRawValue();
 
     Curr_Knob_state = map(Curr_Pot_state,0,4095,0,100);
-    Prev_Knob_state = map(Curr_Pot_state,0,4095,0,100);
+    Prev_Knob_state = Curr_Knob_state;
 
 }
 
@@ -48,6 +48,7 @@ void pot_update(void (*call_inp)()){
     if (call_inp != nullptr) {
         call = call_inp;
     }
+    
     Pot_Sig_Res.update();
     Pot_Raw_state = Pot_Sig_Res.getRawValue();
     // Map the filtered reading to a stable percentage for the active control profile.
@@ -56,7 +57,9 @@ void pot_update(void (*call_inp)()){
     if(Pot_state_diff() < Threashold){
         return;
     }
-    Curr_Knob_state = map(Curr_Pot_state,0,175000,0,100);
+    
+    Curr_Knob_state = map(Curr_Pot_state,0,4095,0,100);
+    
     if (!SENSOR_DEBUG_MODE) {
         pot_run();
     }
@@ -67,23 +70,27 @@ void pot_update(void (*call_inp)()){
 
 void pot_run(){
     if(nullptr == call){
+        int loop_count = Pot_Knob_diff() / sensi_vol;
+        
+        if (loop_count > 10) loop_count = 10; // Failsafe limit
+        if (loop_count == 0) return;          // Skip if no actual percentage change
+        
         // Serial.println("Default call function");
         if(Pot_state_diff_no_abs() > 0){
-            for(int i = 0;i<(Pot_Knob_diff()/sensi_vol);i++){
+            for(int i = 0; i < loop_count; i++){
                 bleKeyboard.write(KEY_MEDIA_VOLUME_UP);
-            // Serial.println("Vol up");
-            delay(50);
+                // Serial.println("Vol up");
+                delay(50);
             }
         }else{
-            for(int i = 0;i<(Pot_Knob_diff()/sensi_vol);i++){
+            for(int i = 0; i < loop_count; i++){
                 bleKeyboard.write(KEY_MEDIA_VOLUME_DOWN);
-            // Serial.println("Vol down");
-            delay(50);
+                // Serial.println("Vol down");
+                delay(50);
             }
         }
 
     }else{
         call();
     }
-
 }
