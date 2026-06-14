@@ -4,7 +4,7 @@
 #include <SensorDebug.h>
 
 int Threashold_Joy_UP   = 2020; // Increased to handle raw hardware noise cushions
-int Threashold_Joy_DOWN = 1800; // Increased to handle raw hardware noise cushions
+int Threashold_Joy_DOWN = 1830; // Increased to handle raw hardware noise cushions
 int Sensi = 5; 
 
 
