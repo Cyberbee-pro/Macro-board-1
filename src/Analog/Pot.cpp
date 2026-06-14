@@ -10,7 +10,7 @@
 #define Pot_state_diff_no_abs() (Curr_Pot_state - Prev_Pot_state)
 #define Pot_Knob_diff() (abs(Prev_Knob_state - Curr_Knob_state))
 
-int Threashold = 5;
+int Threashold = 5000;
 int Prev_Pot_state = 0;
 int Curr_Pot_state = 0;
 int Pot_Raw_state = 0;
@@ -56,7 +56,7 @@ void pot_update(void (*call_inp)()){
     if(Pot_state_diff() < Threashold){
         return;
     }
-    Curr_Knob_state = map(Curr_Pot_state,0,4095,0,100);
+    Curr_Knob_state = map(Curr_Pot_state,0,175000,0,100);
     if (!SENSOR_DEBUG_MODE) {
         pot_run();
     }
@@ -72,11 +72,13 @@ void pot_run(){
             for(int i = 0;i<(Pot_Knob_diff()/sensi_vol);i++){
                 bleKeyboard.write(KEY_MEDIA_VOLUME_UP);
             // Serial.println("Vol up");
+            delay(50);
             }
         }else{
             for(int i = 0;i<(Pot_Knob_diff()/sensi_vol);i++){
                 bleKeyboard.write(KEY_MEDIA_VOLUME_DOWN);
             // Serial.println("Vol down");
+            delay(50);
             }
         }
 
