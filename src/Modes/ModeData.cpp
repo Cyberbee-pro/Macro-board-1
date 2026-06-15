@@ -7,13 +7,13 @@
 
 void run_def(){
     joy_state_update();
-    pot_update();
+    // pot_update();
     run_matrix();
 }
 
 void run_gaming(){
     joy_state_update();
-    pot_update();
+    // pot_update();
     run_matrix();
 }
 

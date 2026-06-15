@@ -1,7 +1,7 @@
 #include <PINS.h>
 #include <POT.h>
 
-float snapMultiplier = 0.01;
+float snapMultiplier = 0.06;
 
 int LED[3] = { 32, 33, 25};
 

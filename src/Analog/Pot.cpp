@@ -61,7 +61,9 @@ void pot_update(void (*call_inp)()){
     Curr_Knob_state = map(Curr_Pot_state,0,4095,0,100);
     
     if (!SENSOR_DEBUG_MODE) {
+        if(Pot_Knob_diff()!=0){
         pot_run();
+        }
     }
     
     Prev_Knob_state = Curr_Knob_state;
