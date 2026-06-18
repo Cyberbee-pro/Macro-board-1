@@ -87,14 +87,15 @@ This hardware definition layout maps your physical workspace directly to the cor
 
 # Stonks
 <a href="https://www.star-history.com/#Cyberbee-pro%2FMacro-board-1&Date">
- <picture>
 
-<source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Cyberbee-pro%2FMacro-board-1&type=Date&theme=dark" />
+<picture>
 
-<source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Cyberbee-pro%2FMacro-board-1&type=Date" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Cyberbee-pro%2FMacro-board-1&type=Date&theme=dark" />
 
-<img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Cyberbee-pro%2FMacro-board-1&type=Date" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Cyberbee-pro%2FMacro-board-1&type=Date" />
 
- </picture>
- </a>
----
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Cyberbee-pro%2FMacro-board-1&type=Date" />
+
+</picture>
+ 
+</a>
