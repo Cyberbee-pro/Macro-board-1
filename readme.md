@@ -89,4 +89,4 @@ This hardware definition layout maps your physical workspace directly to the cor
 
 ===
 
-<img src="https://www.star-history.com/?repos=Cyberbee-pro%2FMacro-board-1&type=date&legend=top-left" alt="star stonks"/>
+<img src="https://api.star-history.com/svg?repos=Cyberbee-pro%2FMacro-board-1&type=date&legend=top-left" alt="star stonks"/>
