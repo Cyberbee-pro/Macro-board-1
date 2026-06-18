@@ -82,3 +82,11 @@ This hardware definition layout maps your physical workspace directly to the cor
 - more stable
 - implement 74HC595 shift register to control the LEDs
 - add two more buttons
+
+
+
+# Stonks
+
+===
+
+<img src="https://www.star-history.com/?repos=Cyberbee-pro%2FMacro-board-1&type=date&legend=top-left" alt="star stonks"/>
