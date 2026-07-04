@@ -10,7 +10,7 @@
 #define Pot_state_diff_no_abs() (Curr_Pot_state - Prev_Pot_state)
 #define Pot_Knob_diff() (abs(Prev_Knob_state - Curr_Knob_state))
 
-int Threashold = 30;
+int Threashold = 130;
 int Prev_Pot_state = 0;
 int Curr_Pot_state = 0;
 int Pot_Raw_state = 0;
