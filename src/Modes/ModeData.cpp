@@ -48,7 +48,7 @@ namespace GamingProfile {
 void run_def(){
     joy_state_update();
     pot_update();
-    run_matrix();
+    run_matrix(nullptr);
 }
 
 void run_gaming(){
@@ -60,7 +60,7 @@ void run_gaming(){
 void run_media(){
     joy_state_update();
     pot_update();
-    run_matrix();
+    run_matrix(nullptr);
 }
 
 
