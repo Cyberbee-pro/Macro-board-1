@@ -27,6 +27,20 @@ RAW_COLUMNS = (
 )
 
 
+COMBINED_COLUMNS = (
+    "ms",
+    "joy_x_raw",
+    "joy_y_raw",
+    "joy_x_value",
+    "joy_y_value",
+    "joy_x_step",
+    "joy_y_step",
+    "pot_raw",
+    "pot_value",
+    "pot_pct",
+)
+
+
 PROCESSED_COLUMNS = (
     "ms",
     "joy_x",
@@ -49,6 +63,8 @@ PROCESSED_VALUE_COLUMNS = (
 
 
 def detect_columns(column_count: int) -> tuple[str, ...] | None:
+    if column_count == len(COMBINED_COLUMNS):
+        return COMBINED_COLUMNS
     if column_count == len(PROCESSED_COLUMNS):
         return PROCESSED_COLUMNS
     if column_count == len(PROCESSED_VALUE_COLUMNS):
@@ -120,8 +136,63 @@ def plot_file(
     threshold: int,
 ) -> None:
     time_s = [(row["ms"] - rows[0]["ms"]) / 1000.0 for row in rows]
+    is_combined_log = columns == COMBINED_COLUMNS
     is_raw_log = columns == RAW_COLUMNS
     has_scaled_pot = "pot_pct" in columns
+
+    if is_combined_log:
+        pot_raw = [row["pot_raw"] for row in rows]
+        pot_value = [row["pot_value"] for row in rows]
+        pot_pct_scaled = [row["pot_pct"] * 40.95 for row in rows]
+        joy_x_raw = [row["joy_x_raw"] for row in rows]
+        joy_y_raw = [row["joy_y_raw"] for row in rows]
+        joy_x_value = [row["joy_x_value"] for row in rows]
+        joy_y_value = [row["joy_y_value"] for row in rows]
+
+        fig, axes = plt.subplots(3, 1, figsize=(14, 10), sharex=True)
+
+        axes[0].plot(time_s, pot_raw, label="pot_raw ADC", color="#0d6efd", linewidth=1)
+        axes[0].plot(time_s, pot_value, label="pot_processed ADC", color="#6610f2", linewidth=1)
+        axes[0].plot(
+            time_s,
+            pot_pct_scaled,
+            label="pot_pct scaled",
+            color="#fd7e14",
+            linewidth=1,
+            alpha=0.7,
+        )
+        axes[0].set_ylabel("Pot ADC")
+        axes[0].set_title(f"{path.name}: raw and processed sensor capture")
+        axes[0].grid(True, alpha=0.3)
+        axes[0].legend(loc="upper right")
+
+        axes[1].plot(time_s, joy_x_raw, label="joy_x_raw ADC", color="#198754", linewidth=1)
+        axes[1].plot(time_s, joy_y_raw, label="joy_y_raw ADC", color="#dc3545", linewidth=1)
+        axes[1].set_ylabel("Joystick raw ADC")
+        axes[1].grid(True, alpha=0.3)
+        axes[1].legend(loc="upper right")
+
+        axes[2].plot(time_s, joy_x_value, label="joy_x_processed ADC", color="#20c997", linewidth=1)
+        axes[2].plot(time_s, joy_y_value, label="joy_y_processed ADC", color="#d63384", linewidth=1)
+        axes[2].set_ylabel("Joystick processed ADC")
+        axes[2].set_xlabel("Time (s)")
+        axes[2].grid(True, alpha=0.3)
+        axes[2].legend(loc="upper right")
+
+        dropout_runs = mark_dropouts(axes[0], time_s, pot_raw, threshold)
+
+        fig.tight_layout()
+        fig.savefig(output_path, dpi=170)
+        plt.close(fig)
+
+        zero_count = sum(1 for value in pot_raw if value == 0)
+        print(f"Saved plot: {output_path}")
+        print(f"Samples: {len(rows)}")
+        print(f"Pot raw min/max: {min(pot_raw)} / {max(pot_raw)}")
+        print(f"Pot processed min/max: {min(pot_value)} / {max(pot_value)}")
+        print(f"Pot raw zero samples: {zero_count}")
+        print(f"Dropout runs below {threshold}: {dropout_runs}")
+        return
 
     if is_raw_log:
         pot_series = [row["pot_raw"] for row in rows]

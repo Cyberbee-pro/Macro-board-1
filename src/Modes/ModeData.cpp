@@ -6,8 +6,8 @@
 #include <ModeDisp.h>
 
 void run_def(){
-    joy_state_update();
-    // pot_update();
+    // joy_state_update();
+    pot_update();
     run_matrix();
 }
 
