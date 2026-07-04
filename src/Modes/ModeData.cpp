@@ -6,20 +6,20 @@
 #include <ModeDisp.h>
 
 void run_def(){
-    // joy_state_update();
+    joy_state_update();
     pot_update();
     run_matrix();
 }
 
 void run_gaming(){
     joy_state_update();
-    // pot_update();
+    pot_update();
     run_matrix();
 }
 
 void run_media(){
     joy_state_update();
-    // pot_update();
+    pot_update();
     run_matrix();
 }
 
