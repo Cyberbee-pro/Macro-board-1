@@ -54,9 +54,8 @@ void run_matrix_def(){
 
 void run_matrix(void (*input_profile)()){
 
-    if(nullptr != input_profile){
-        call_mat = input_profile;
-    }
+    call_mat = input_profile;
+
 
     if(nullptr != call_mat){
         call_mat();
