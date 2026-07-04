@@ -44,6 +44,8 @@ void pins_setup(){
         pinMode(buttons[i], INPUT_PULLUP);
     }
 
+    analogSetAttenuation(ADC_11db);
+
     // Joystick setup
     Joy_Hor_Res.setAnalogResolution(4095);
     Joy_Ver_Res.setAnalogResolution(4095);

@@ -34,7 +34,9 @@ void pot_setup(){
 
 }
 
-
+int pot_percent(int value) {
+    return static_cast<int>(map(value, 0, 4095, 0, 100));
+}
 
 custom_wait wait_pot(40);
 
@@ -58,7 +60,7 @@ void pot_update(void (*call_inp)()){
         return;
     }
     
-    Curr_Knob_state = map(Curr_Pot_state,0,4095,0,100);
+    Curr_Knob_state = pot_percent(Curr_Pot_state);
     
     if (!SENSOR_DEBUG_MODE) {
         if(Pot_Knob_diff()!=0){
