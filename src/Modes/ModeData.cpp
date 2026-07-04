@@ -11,30 +11,30 @@
 
 namespace GamingProfile {
     // These are safely isolated from the default layout in ButtonMatrix.cpp
-    debounce GbuttonT1(&bleKeyboard, KEY_TOP_LEFT, KEY_ESC);
-    debounce GbuttonT2(&bleKeyboard, KEY_TOP_MID, 'q'); 
-    debounce GbuttonT3(&bleKeyboard, KEY_TOP_RIGHT, KEY_LEFT_SHIFT);
+    debounce buttonT1(&bleKeyboard, KEY_TOP_LEFT, KEY_ESC);
+    debounce buttonT2(&bleKeyboard, KEY_TOP_MID, 'q'); 
+    debounce buttonT3(&bleKeyboard, KEY_TOP_RIGHT, KEY_LEFT_SHIFT);
 
-    debounce GbuttonM1(&bleKeyboard, KEY_MID_LEFT, KEY_TAB);
-    debounce GbuttonM2(&bleKeyboard, KEY_MID_MID, 'w');
-    debounce GbuttonM3(&bleKeyboard, KEY_MID_RIGHT, 'e');
+    debounce buttonM1(&bleKeyboard, KEY_MID_LEFT, KEY_TAB);
+    debounce buttonM2(&bleKeyboard, KEY_MID_MID, 'w');
+    debounce buttonM3(&bleKeyboard, KEY_MID_RIGHT, 'e');
 
-    debounce GbuttonB1(&bleKeyboard, KEY_BOT_LEFT, 'a');
-    debounce GbuttonB2(&bleKeyboard, KEY_BOT_MID, 's');
-    debounce GbuttonB3(&bleKeyboard, KEY_BOT_RIGHT, 'd');
+    debounce buttonB1(&bleKeyboard, KEY_BOT_LEFT, 'a');
+    debounce buttonB2(&bleKeyboard, KEY_BOT_MID, 's');
+    debounce buttonB3(&bleKeyboard, KEY_BOT_RIGHT, 'd');
 
     void run_layout() {
-        GbuttonT1.run_process();
-        GbuttonT2.run_process();
-        GbuttonT3.run_process();
+        buttonT1.run_process();
+        buttonT2.run_process();
+        buttonT3.run_process();
 
-        GbuttonM1.run_process();
-        GbuttonM2.run_process();
-        GbuttonM3.run_process();
+        buttonM1.run_process();
+        buttonM2.run_process();
+        buttonM3.run_process();
 
-        GbuttonB1.run_process();
-        GbuttonB2.run_process();
-        GbuttonB3.run_process();
+        buttonB1.run_process();
+        buttonB2.run_process();
+        buttonB3.run_process();
     }
 }
 
