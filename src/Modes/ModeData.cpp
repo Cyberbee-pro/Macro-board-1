@@ -17,7 +17,7 @@ namespace GamingProfile {
 
     debounce buttonM1(&bleKeyboard, KEY_MID_LEFT, KEY_TAB);
     debounce buttonM2(&bleKeyboard, KEY_MID_MID, 'w');
-    debounce buttonM3(&bleKeyboard, KEY_MID_RIGHT, 'e');
+    debounce buttonM3(&bleKeyboard, KEY_MID_RIGHT, ' ');
 
     debounce buttonB1(&bleKeyboard, KEY_BOT_LEFT, 'a');
     debounce buttonB2(&bleKeyboard, KEY_BOT_MID, 's');
