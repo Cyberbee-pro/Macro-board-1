@@ -32,9 +32,7 @@ void joy_state_update(void (*call_inp)()){
         Move_Y = 0;
     }
 
-    if (call_inp != nullptr) {
         call_joy = call_inp;
-    }
 
     if (!SENSOR_DEBUG_MODE) {
         joy_run();
