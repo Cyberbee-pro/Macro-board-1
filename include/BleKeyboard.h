@@ -5,6 +5,7 @@
 #include <Print.h>
 #include <string>
 
+#define KEY_LEFT_CTRL   0x80
 constexpr uint8_t KEY_LEFT_SHIFT = 0x81;
 constexpr uint8_t KEY_UP_ARROW = 0xDA;
 constexpr uint8_t KEY_DOWN_ARROW = 0xD9;
